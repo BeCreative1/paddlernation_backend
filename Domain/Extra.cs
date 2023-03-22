@@ -6,11 +6,12 @@ public class Extra
 {
     [Key]
     public string Guid { get; set; }
-    public int Quantity { get; }
-    public String Name { get; }
-    public double Price { get; }
-    public String Comment { get; }
-    public int MaxAmount { get; }
+    public int Quantity { get; set; }
+    public String Name { get; set; }
+    public double Price { get; set; }
+    public String Comment { get; set; }
+    public int MaxAmount { get; set; }
+    public ICollection<ExtrasOrder> ExtrasOrders { get; }
 
     public Extra(int quantity, string name, double price, string comment, int maxAmount)
     {
@@ -19,5 +20,16 @@ public class Extra
         Price = price;
         Comment = comment;
         MaxAmount = maxAmount;
+        ExtrasOrders = new List<ExtrasOrder>();
+    }
+    
+    public Extra(int quantity, string name, double price, string comment, int maxAmount, ICollection<ExtrasOrder> extrasOrders)
+    {
+        Quantity = quantity;
+        Name = name;
+        Price = price;
+        Comment = comment;
+        MaxAmount = maxAmount;
+        ExtrasOrders = extrasOrders;
     }
 }

@@ -7,24 +7,35 @@ public class Reservation
 {
     [Key]
     public string Guid { get; set; }
-    public DateTime CreatedAt { get; }
-    public DateTime DateFrom { get; }
-    public DateTime DateTo { get; }
-    public IEnumerable<PaddleBoard> PaddleBoards { get; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime DateFrom { get; set; }
+    public DateTime DateTo { get; set; }
+    public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
+    public Order OrderedIn { get; }
 
     public Reservation(DateTime dateFrom, DateTime dateTo)
     {
         DateFrom = dateFrom;
         DateTo = dateTo;
         CreatedAt = DateTime.Now;
-        PaddleBoards = new List<PaddleBoard>();
+        PaddleBoardReservations = new List<PaddleBoardReservation>();
     }
 
-    public Reservation(DateTime dateFrom, DateTime dateTo, IEnumerable<PaddleBoard> paddleBoards)
+    public Reservation(DateTime dateFrom, DateTime dateTo, Order orderedIn)
     {
         DateFrom = dateFrom;
         DateTo = dateTo;
-        PaddleBoards = paddleBoards;
         CreatedAt = DateTime.Now;
+        PaddleBoardReservations = new List<PaddleBoardReservation>();
+        OrderedIn = orderedIn;
+    }
+
+    public Reservation(DateTime dateFrom, DateTime dateTo, ICollection<PaddleBoardReservation> paddleBoardReservations, Order orderedIn)
+    {
+        DateFrom = dateFrom;
+        DateTo = dateTo;
+        PaddleBoardReservations = paddleBoardReservations;
+        CreatedAt = DateTime.Now;
+        OrderedIn = orderedIn;
     }
 }
