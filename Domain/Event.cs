@@ -10,30 +10,31 @@ public class Event
     public string Email { get; set; }
     public long TimeSpan { get; set; }
     public string Phone { get; set; }
-    public string Place { get; set; }
+    public string HeldAtID { get; set; }
+    public Address HeldAt { get; set; }
     public string Activity { get; set; }
     public string Comment { get; set; }
     [Range(100000000,999999999)]
     public int? CVR { get; set; }
 
-    public Event(string name, string email, long timeSpan, string phone, string place, string activity, string comment)
+    public Event(string name, string email, long timeSpan, string phone,  string activity, string comment)
     {
         Name = name;
         Email = email;
         TimeSpan = timeSpan;
         Phone = phone;
-        Place = place;
         Activity = activity;
         Comment = comment;
     }
 
-    public Event(string name, string email, long timeSpan, string phone, string place, string activity, string comment, int? cvr)
+    public Event(string name, string email, long timeSpan, string phone, Address heldAt, string activity, string comment, int? cvr)
     {
         Name = name;
         Email = email;
         TimeSpan = timeSpan;
         Phone = phone;
-        Place = place;
+        HeldAt = heldAt;
+        HeldAtID = HeldAt.Guid;
         Activity = activity;
         Comment = comment;
         CVR = cvr;

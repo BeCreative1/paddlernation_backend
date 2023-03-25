@@ -7,17 +7,19 @@ public class PaddlerNationContext : DbContext
 {
     public DbSet<Customer> Customers { get; set; }
     public DbSet<PaddleBoard> PaddleBoards { get; set; }
+    public DbSet<PaddleBoardType> PaddleBoardTypes { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Extra> Extras { get; set; }
-    public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<Address> Addresses { get; set; }
     public DbSet<ExtrasOrder> ExtrasOrders  { get; set; }
     public DbSet<PaddleBoardReservation> PaddleBoardReservations { get; set; }
     public DbSet<Event> Events { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Data Source = PaddlerNationDatabase.db");
+        optionsBuilder.UseSqlite("Data Source = ../EfcDataAccess/PaddlerNationDatabase.db");
     }
 
 
@@ -37,23 +39,34 @@ public class PaddlerNationContext : DbContext
         
         // RELATIONS v
         
-        // Order --many--> Reservations
-        modelBuilder.Entity<Reservation>()
-            .HasOne(r => r.OrderedIn)
-            .WithMany(o=> o.Reservations);
-
-        // Order --one--> Customer
-        modelBuilder.Entity<Customer>()
-            .HasOne(c => c.Ordered)
-            .WithOne(o => o.Customer)
-            .HasForeignKey<Order>(o => o.CustomerID);
-
-        // Order --one--> DeliveryAddress
-        modelBuilder.Entity<DeliveryAddress>()
-            .HasOne(da => da.Order)
-            .WithOne(o => o.DeliveryAddress)
-            .HasForeignKey<Order>(o => o.DeliveryAddressID);
-
+        //Events --one--> Address
+        //Address --many--> Events
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.HeldAt)
+            .WithMany(a => a.Events)
+            .HasForeignKey(e => e.HeldAtID);
+        
+        //Delivery --one--> Address
+        //Address --many--> Delivery
+        modelBuilder.Entity<Delivery>()
+            .HasOne(d => d.At)
+            .WithMany(a => a.Deliveries)
+            .HasForeignKey(d => d.AtID);
+        
+        //Order --one--> Delivery
+        //Delivery --many--> Order
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Delivery)
+            .WithMany(d => d.Orders)
+            .HasForeignKey(o => o.DeliveryID);
+        
+        //Order --one--> Customer
+        //Customer --many--> Order
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.OrderedBy)
+            .WithMany(c => c.Orders)
+            .HasForeignKey(o => o.OrderedByID);
+        
         // Order <--many--> Extras
         modelBuilder.Entity<ExtrasOrder>()
             .HasOne(eo => eo.Extra)
@@ -63,6 +76,12 @@ public class PaddlerNationContext : DbContext
             .HasOne(eo => eo.Order)
             .WithMany(o => o.ExtrasOrders)
             .HasForeignKey(eo => eo.OrderID);
+        
+        // Reservation --one--> Order
+        // Order --many--> Reservations
+        modelBuilder.Entity<Reservation>()
+            .HasOne(r => r.OrderedIn)
+            .WithMany(o=> o.Reservations);
         
         // Reservation <--many--> PaddleBoards
         modelBuilder.Entity<PaddleBoardReservation>()
@@ -74,16 +93,17 @@ public class PaddlerNationContext : DbContext
             .WithMany(pb => pb.PaddleBoardReservations)
             .HasForeignKey(pbr => pbr.PadleBoardID);
         
+        //PaddleBoard --one--> PaddleBoardType
+        //PaddleBoardTyp --many--> PaddleBoard
+        modelBuilder.Entity<PaddleBoard>()
+            .HasOne(pb => pb.PaddleBoardType)
+            .WithMany(pbt => pbt.PaddleBoards)
+            .HasForeignKey(pb => pb.PaddleBoardTypeID);
+        
         // --- --- ---   --- --- ---   --- --- ---
         
         // Enum Conversion v
-        
-        //PaddleBoardType enum conversion
-        modelBuilder.Entity<PaddleBoard>()
-            .Property(e => e.PaddleBoardType)
-            .HasConversion(v => v.ToString(),
-                v => (PaddleBoardType) Enum.Parse(typeof(PaddleBoardType), v));
-        
+
         //PaymentMethod enum conversion
         modelBuilder.Entity<Order>()
             .Property(e => e.PaymentMethod)
@@ -95,5 +115,11 @@ public class PaddlerNationContext : DbContext
             .Property(e => e.PaymentStage)
             .HasConversion(v => v.ToString(),
                 v => (PaymentStage) Enum.Parse(typeof(PaymentStage), v));
+
+        // DeliveryType enum conversion
+        modelBuilder.Entity<Delivery>()
+            .Property(d => d.DeliveryType)
+            .HasConversion(v => v.ToString(),
+                v => (DeliveryType) Enum.Parse(typeof(DeliveryType), v));
     }
 }

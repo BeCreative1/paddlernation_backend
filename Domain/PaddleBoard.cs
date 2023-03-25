@@ -4,35 +4,36 @@ namespace Domain;
 
 public class PaddleBoard
 {
-    [Key]
-    public string Guid { get; set; }
+    [Key] public string Guid { get; set; }
     public string Name { get; set; }
     public double Price { get; set; }
     public int MinCapacity { get; set; }
     public int MaxCapacity { get; set; }
-    public int Quantity { get; set; }
+    public bool IsActive { get; set; }
+    public string PaddleBoardTypeID { get; set; }
     public PaddleBoardType PaddleBoardType { get; set; }
-    
+
     public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
 
-    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, int quantity, PaddleBoardType paddleBoardType, ICollection<PaddleBoardReservation> paddleBoardReservations)
+    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive)
     {
         Name = name;
         Price = price;
         MinCapacity = minCapacity;
         MaxCapacity = maxCapacity;
-        Quantity = quantity;
-        PaddleBoardType = paddleBoardType;
-        PaddleBoardReservations = paddleBoardReservations;
+        IsActive = isActive;
     }
 
-    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, int quantity, PaddleBoardType paddleBoardType)
+    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive,
+        PaddleBoardType paddleBoardType, ICollection<PaddleBoardReservation> paddleBoardReservations)
     {
         Name = name;
         Price = price;
         MinCapacity = minCapacity;
         MaxCapacity = maxCapacity;
-        Quantity = quantity;
+        IsActive = isActive;
         PaddleBoardType = paddleBoardType;
+        PaddleBoardTypeID = paddleBoardType.Guid;
+        PaddleBoardReservations = paddleBoardReservations;
     }
 }

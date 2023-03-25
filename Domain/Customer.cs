@@ -9,7 +9,7 @@ public class Customer
     public string FullName { get; set; }
     public string Email { get; set; }
     public string Phone { get; set; }
-    public Order Ordered { get;  }
+    public ICollection<Order> Orders { get; set; }
 
     public Customer(string fullName, string email, string phone)
     {
@@ -18,11 +18,11 @@ public class Customer
         Phone = phone;
     }
     
-    public Customer(string fullName, string email, string phone, Order ordered)
+    public Customer(string fullName, string email, string phone, ICollection<Order> orders)
     {
         FullName = fullName;
         Email = email;
         Phone = phone;
-        Ordered = ordered;
+        Orders = orders;
     }
 }
