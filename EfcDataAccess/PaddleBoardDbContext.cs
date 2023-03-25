@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfcDataAccess;
@@ -13,7 +14,12 @@ public class PaddleBoardDbContext : DbContext
     public DbSet<ReservationItem> ReservationItems { get; set; } 
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Order> Orders { get; set; }
-    
+    public DbSet<Extras> Extras { get; set; }
+    public DbSet<ExtrasOrder> ExtrasOrders { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
+    public DbSet<Events> Events { get; set; }
+
 #pragma warning restore CS8618
 
     
