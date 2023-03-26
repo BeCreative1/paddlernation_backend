@@ -15,8 +15,8 @@ public class ReservationsController : ControllerBase
 		_logic = logic;
 	}
 
-	[HttpGet]
-	public async Task<ActionResult<Reservation>> GetByIdAsync([FromQuery] int id)
+	[HttpGet("{id:int}")]
+	public async Task<ActionResult<Reservation>> GetByIdAsync([FromRoute] string id)
 	{
 		try
 		{

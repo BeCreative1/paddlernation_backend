@@ -7,9 +7,9 @@ namespace EfcDataAccess.DAOs;
 public class ReservationDao : IReservationDao
 {
 
-	private readonly Context _context;
+	private readonly PaddlerNationContext _context;
 
-	public ReservationDao(Context context)
+	public ReservationDao(PaddlerNationContext context)
 	{
 		_context = context;
 	}
@@ -20,9 +20,10 @@ public class ReservationDao : IReservationDao
 		return reservations;
 	}
 
-	public async Task<Reservation?> GetByIdAsync(int id)
+	public async Task<Reservation?> GetByIdAsync(string id)
 	{
 		Reservation? reservation = await _context.Reservations.FindAsync(id);
+
 		return reservation;
 	}
 }

@@ -21,7 +21,7 @@ public class ReservationLogic : IReservationLogic
 		return reservations;
 	}
 
-	public async Task<Reservation> GetByIdAsync(int id)
+	public async Task<Reservation> GetByIdAsync(string id)
 	{
 		Reservation? reservation = await _reservationDao.GetByIdAsync(id);
 
