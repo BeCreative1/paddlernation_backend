@@ -7,7 +7,6 @@ namespace EfcDataAccess;
 
 public class PaddleBoardDbContext : DbContext
 {
-    
 #pragma warning disable CS8618 // Disable nullable warning as they will never be null
     
     public DbSet<PaddleboardType> PaddleBoardTypes { get; set; }
@@ -27,6 +26,13 @@ public class PaddleBoardDbContext : DbContext
     {
         // probably we will move this outside to some config 
         // also change it to postgresql
-        optionsBuilder.UseSqlite("Data Source = paddleboards.db");
+        optionsBuilder.UseSqlite("Data Source = ../EfcDataAccess/paddleboards.db");
     }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Customer>().HasKey(customer => customer.Id);
+        modelBuilder.Entity<DeliveryAddress>().HasKey(address => address.Id);
+        modelBuilder.Entity<Order>().HasKey(order => order.Id);
+    }
+
 }

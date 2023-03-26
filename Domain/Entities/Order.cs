@@ -11,7 +11,6 @@ public class Order
     public int PaymentMethod { get; set; }
     public DateTime CreatedAt { get; set; }
     public int PaymentStage { get; set; }
-    public string Guid { get; set; } 
     
     [Required] public Customer Customer { get; set; } = null!;
     public DeliveryAddress? DeliveryAddress { get; set; }
