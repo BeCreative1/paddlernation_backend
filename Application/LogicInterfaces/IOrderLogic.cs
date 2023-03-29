@@ -6,4 +6,5 @@ namespace Application.LogicInterfaces;
 public interface IOrderLogic
 {
     Task<Order> CreateAsync(OrderCreationDto dto);
+    Task DeleteAsync(int id);
 }

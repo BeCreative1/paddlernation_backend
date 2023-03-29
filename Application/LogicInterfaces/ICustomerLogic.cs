@@ -4,5 +4,5 @@ namespace Application.LogicInterfaces;
 
 public interface ICustomerLogic
 {
-    Task<Customer?> GetByIdAsync(int guid);
+    public Task<Customer?> GetByIdAsync(int id);
 }

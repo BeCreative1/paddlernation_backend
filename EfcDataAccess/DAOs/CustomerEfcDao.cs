@@ -14,7 +14,7 @@ public class CustomerEfcDao : ICustomerDao
     }
     public async Task<Customer?> GetByIdAsync(int id)
     {
-        Customer? customer = await context.Customers.FirstOrDefaultAsync(n=>n.Id==id);
+        Customer? customer = await context.Customers.FindAsync(id);
         return customer;    
     }
 }

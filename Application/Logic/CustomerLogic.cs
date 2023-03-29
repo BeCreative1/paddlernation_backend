@@ -13,14 +13,15 @@ public class CustomerLogic : ICustomerLogic
         this.customerDao = customerDao;
     }
 
-    public async Task<Customer?> GetByIdAsync(int guid)
+    public async Task<Customer?> GetByIdAsync(int id)
     {
-        Customer? customer = await customerDao.GetByIdAsync(guid);
+        Customer? customer = await customerDao.GetByIdAsync(id);
         if (customer == null)
         {
-            throw new Exception($"Customer with guid {guid} does not exist");
+            throw new Exception($"Customer with id {id} was not found");
         }
 
         return customer;
     }
+    
 }

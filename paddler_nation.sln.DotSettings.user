@@ -11,5 +11,8 @@
     &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderServiceTests.CreateAsync_ShouldCreateOrder_WhenValidDtoProvided&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderServiceTests.CreateAsync_ShouldCreateOrder_WhenValidDtoProvided&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest.CreateAsync_ShouldCreateOrder_WhenValidDtoProvided&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest.CreateAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest.OrderCreateAsyncTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -30,4 +30,19 @@ public class OrdersController : ControllerBase
             throw new Exception(e.Message);
         }
     }
+
+[HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteAsync([FromRoute] int id)
+    {
+        try
+        {
+            await orderLogic.DeleteAsync(id);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }

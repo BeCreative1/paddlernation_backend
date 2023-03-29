@@ -26,7 +26,7 @@ public class OrderLogic : IOrderLogic
             Customer? customer = await customerDao.GetByIdAsync(dto.OwnerId);
             if (customer == null)
             {
-                throw new Exception($"Customer with guid {dto.OwnerId} was not found");
+                throw new Exception($"Customer with id {dto.OwnerId} was not found");
             }
 
             DeliveryAddress? deliveryAddress = await addressDao.GetByIdAsync(dto.AddressId);
@@ -54,8 +54,19 @@ public class OrderLogic : IOrderLogic
         }
     }
 
+    public async Task DeleteAsync(int id)
+    {
+        Order? order = await orderDao.GetByIdAsync(id);
+        if (order == null)
+        {
+            throw new Exception($"Order with id {id} was not found");
+        }
+
+        await orderDao.DeleteAsync(id);
+
+    }
+
     private void ValidateOrder(OrderCreationDto dto)
     {
-        
     }
 }
