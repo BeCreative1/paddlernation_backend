@@ -25,7 +25,45 @@ public class PaddlerNationContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Assigning Keys
+        // Auto increment primary keys
+
+        modelBuilder.Entity<Customer>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<PaddleBoard>()
+            .Property(pb => pb.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<PaddleBoardType>()
+            .Property(pbt => pbt.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Reservation>()
+            .Property(r => r.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Extra>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Delivery>()
+            .Property(d => d.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Address>()
+            .Property(a => a.Id)
+            .ValueGeneratedOnAdd();
+        
+        modelBuilder.Entity<Event>()
+            .Property(e => e.Id)
+            .ValueGeneratedOnAdd();
+        
+        // Assigning Keys v
         
         // ExtrasOrder foreign  keys
         modelBuilder.Entity<ExtrasOrder>()

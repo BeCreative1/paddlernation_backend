@@ -4,9 +4,9 @@ namespace Domain;
 
 public class ExtrasOrder
 {
-    public string ExtrasID { get; set;  }
+    public int ExtrasID { get; set;  }
     public Extra Extra { get; set; }
-    public string OrderID { get; set; }
+    public int OrderID { get; set; }
     public Order Order { get; set; }
     public int Amount { get; set; }
 

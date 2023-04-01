@@ -5,7 +5,7 @@ namespace Domain;
 public class Extra
 {
     [Key]
-    public string Guid { get; set; }
+    public int Id { get; set; }
     public int Quantity { get; set; }
     public String Name { get; set; }
     public double Price { get; set; }
