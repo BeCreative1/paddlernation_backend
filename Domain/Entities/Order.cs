@@ -5,14 +5,14 @@ namespace Domain;
 public class Order
 {
     [Key]
-    public String Guid { get; set; }
+    public int Id { get; set; }
     public double TotalPrice { get; set; }
     public DateTime CreatedAt { get; }
     public IEnumerable<Reservation> Reservations { get; }
     public IEnumerable<ExtrasOrder> ExtrasOrders { get; }
-    public string? OrderedByID { get; }
+    public int? OrderedByID { get; }
     public Customer? OrderedBy { get; }
-    public string? DeliveryID { get; }
+    public int? DeliveryID { get; }
     public Delivery? Delivery { get; }
     public PaymentMethod PaymentMethod { get; set; }
     public PaymentStage PaymentStage { get; set; }
@@ -39,7 +39,7 @@ public class Order
         PaymentMethod = paymentMethod;
         PaymentStage = paymentStage;
         CreatedAt = DateTime.Now;
-        OrderedByID = orderedBy.Guid;
-        DeliveryID = Delivery.Guid;
+        OrderedByID = orderedBy.Id;
+        DeliveryID = Delivery.Id;
     }
 }

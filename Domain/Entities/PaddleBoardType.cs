@@ -5,7 +5,7 @@ namespace Domain;
 public class PaddleBoardType
 {
     [Key]
-    public string Guid { get; set; }
+    public int Id { get; set; }
     public string NameOfType { get; set; }
     
     public ICollection<PaddleBoard> PaddleBoards { get; }

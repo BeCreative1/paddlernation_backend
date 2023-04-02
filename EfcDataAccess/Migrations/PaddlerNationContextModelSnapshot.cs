@@ -19,8 +19,9 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.Address", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -33,15 +34,16 @@ namespace EfcDataAccess.Migrations
                     b.Property<int>("Zip")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Domain.Customer", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -55,19 +57,19 @@ namespace EfcDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Domain.Delivery", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("AtID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("AtID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("DeliveryType")
                         .IsRequired()
@@ -79,7 +81,7 @@ namespace EfcDataAccess.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("REAL");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.HasIndex("AtID");
 
@@ -88,8 +90,9 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.Event", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Activity")
                         .IsRequired()
@@ -106,9 +109,8 @@ namespace EfcDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HeldAtID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("HeldAtID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -121,7 +123,7 @@ namespace EfcDataAccess.Migrations
                     b.Property<long>("TimeSpan")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.HasIndex("HeldAtID");
 
@@ -130,8 +132,9 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.Extra", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -150,18 +153,18 @@ namespace EfcDataAccess.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("Extras");
                 });
 
             modelBuilder.Entity("Domain.ExtrasOrder", b =>
                 {
-                    b.Property<string>("ExtrasID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ExtrasID")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("OrderID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("OrderID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Amount")
                         .HasColumnType("INTEGER");
@@ -175,14 +178,15 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.Order", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("DeliveryID")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("DeliveryID")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("OrderedByID")
-                        .HasColumnType("TEXT");
+                    b.Property<int?>("OrderedByID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -195,7 +199,7 @@ namespace EfcDataAccess.Migrations
                     b.Property<double>("TotalPrice")
                         .HasColumnType("REAL");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.HasIndex("DeliveryID");
 
@@ -206,8 +210,9 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.PaddleBoard", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
@@ -222,14 +227,13 @@ namespace EfcDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PaddleBoardTypeID")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("PaddleBoardTypeID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.HasIndex("PaddleBoardTypeID");
 
@@ -238,11 +242,11 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.PaddleBoardReservation", b =>
                 {
-                    b.Property<string>("ReservationID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("ReservationID")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("PadleBoardID")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("PadleBoardID")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("ReservationID", "PadleBoardID");
 
@@ -253,22 +257,24 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.PaddleBoardType", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("NameOfType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
                     b.ToTable("PaddleBoardTypes");
                 });
 
             modelBuilder.Entity("Domain.Reservation", b =>
                 {
-                    b.Property<string>("Guid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -279,12 +285,12 @@ namespace EfcDataAccess.Migrations
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OrderedInGuid")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("OrderedInId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasKey("Guid");
+                    b.HasKey("Id");
 
-                    b.HasIndex("OrderedInGuid");
+                    b.HasIndex("OrderedInId");
 
                     b.ToTable("Reservations");
                 });
@@ -379,7 +385,9 @@ namespace EfcDataAccess.Migrations
                 {
                     b.HasOne("Domain.Order", "OrderedIn")
                         .WithMany("Reservations")
-                        .HasForeignKey("OrderedInGuid");
+                        .HasForeignKey("OrderedInId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("OrderedIn");
                 });

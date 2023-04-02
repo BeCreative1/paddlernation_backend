@@ -5,12 +5,12 @@ namespace Domain;
 public class Delivery
 {
     [Key]
-    public string Guid { get; set; }
+    public int Id { get; set; }
     
     public DeliveryType DeliveryType { get; set; }
     public double TotalPrice { get; set; }
     public double TotalKilometers { get; set; }
-    public string AtID { get; set; }
+    public int AtID { get; set; }
     public Address At { get; set; }
     public ICollection<Order> Orders { get; set; }
 
@@ -29,7 +29,7 @@ public class Delivery
         TotalPrice = totalPrice;
         TotalKilometers = totalKilometers;
         At = at;
-        AtID = At.Guid;
+        AtID = At.Id;
         Orders = orders;
     }
 }

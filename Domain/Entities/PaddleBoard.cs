@@ -4,13 +4,13 @@ namespace Domain;
 
 public class PaddleBoard
 {
-    [Key] public string Guid { get; set; }
+    [Key] public int Id { get; set; }
     public string Name { get; set; }
     public double Price { get; set; }
     public int MinCapacity { get; set; }
     public int MaxCapacity { get; set; }
     public bool IsActive { get; set; }
-    public string PaddleBoardTypeID { get; set; }
+    public int PaddleBoardTypeID { get; set; }
     public PaddleBoardType PaddleBoardType { get; set; }
 
     public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
@@ -33,7 +33,7 @@ public class PaddleBoard
         MaxCapacity = maxCapacity;
         IsActive = isActive;
         PaddleBoardType = paddleBoardType;
-        PaddleBoardTypeID = paddleBoardType.Guid;
+        PaddleBoardTypeID = paddleBoardType.Id;
         PaddleBoardReservations = paddleBoardReservations;
     }
 }

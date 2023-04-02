@@ -2,9 +2,9 @@
 
 public class PaddleBoardReservation
 {
-    public string PadleBoardID { get; set; }
+    public int PadleBoardID { get; set; }
     public PaddleBoard PaddleBoard { get; set; }
     
-    public string ReservationID { get; set; }
+    public int ReservationID { get; set; }
     public Reservation Reservation { get; set; }
 }

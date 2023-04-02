@@ -5,7 +5,7 @@ namespace Domain;
 public class Address
 {
     [Key]
-    public string Guid { get; set; }
+    public int Id { get; set; }
     
     public string City { get; set; }
     public int Zip { get; set; }

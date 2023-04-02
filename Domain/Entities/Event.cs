@@ -5,12 +5,12 @@ namespace Domain;
 public class Event
 {
     [Key]
-    public string Guid { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public string Email { get; set; }
     public long TimeSpan { get; set; }
     public string Phone { get; set; }
-    public string HeldAtID { get; set; }
+    public int HeldAtID { get; set; }
     public Address HeldAt { get; set; }
     public string Activity { get; set; }
     public string Comment { get; set; }
@@ -34,7 +34,7 @@ public class Event
         TimeSpan = timeSpan;
         Phone = phone;
         HeldAt = heldAt;
-        HeldAtID = HeldAt.Guid;
+        HeldAtID = HeldAt.Id;
         Activity = activity;
         Comment = comment;
         CVR = cvr;
