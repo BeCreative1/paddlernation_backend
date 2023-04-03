@@ -1,9 +1,10 @@
 using Domain;
+using Domain.DTOs.Reservation;
 
 namespace Application.DaoInterfaces;
 
 public interface IReservationDao
 {
-	Task<IEnumerable<Reservation>> GetAsync();
-	Task<Reservation?> GetByIdAsync(string id);
+	Task<IEnumerable<ReservationDto>> GetAsync();
+	Task<ReservationDto?> GetByIdAsync(string id);
 }

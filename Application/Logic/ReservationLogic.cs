@@ -1,6 +1,7 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
 using Domain;
+using Domain.DTOs.Reservation;
 using Domain.DTOs.Search;
 
 namespace Application.Logic;
@@ -14,16 +15,16 @@ public class ReservationLogic : IReservationLogic
 		_reservationDao = reservationDao;
 	}
 
-	public async Task<IEnumerable<Reservation>> GetAsync()
+	public async Task<IEnumerable<ReservationDto>> GetAsync()
 	{
-		IEnumerable<Reservation> reservations = await _reservationDao.GetAsync();
+		IEnumerable<ReservationDto> reservations = await _reservationDao.GetAsync();
 
 		return reservations;
 	}
 
-	public async Task<Reservation> GetByIdAsync(string id)
+	public async Task<ReservationDto> GetByIdAsync(string id)
 	{
-		Reservation? reservation = await _reservationDao.GetByIdAsync(id);
+		ReservationDto? reservation = await _reservationDao.GetByIdAsync(id);
 
 		if (reservation == null)
 		{

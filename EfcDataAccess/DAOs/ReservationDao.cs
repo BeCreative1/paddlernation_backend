@@ -1,5 +1,6 @@
 using Application.DaoInterfaces;
 using Domain;
+using Domain.DTOs.Reservation;
 using Microsoft.EntityFrameworkCore;
 
 namespace EfcDataAccess.DAOs;
@@ -13,17 +14,40 @@ public class ReservationDao : IReservationDao
 	{
 		_context = context;
 	}
-	public async Task<IEnumerable<Reservation>> GetAsync()
+	public async Task<IEnumerable<ReservationDto>> GetAsync()
 	{
 		IEnumerable<Reservation> reservations = await _context.Reservations.ToListAsync();
 
-		return reservations;
+		return reservations.Select(r => new ReservationDto
+		{
+			Id = r.Id,
+			CreatedAt = r.CreatedAt,
+			DateFrom = r.DateFrom,
+			DateTo = r.DateTo,
+			//TODO there is no setter
+			PaddleBoardReservations = {},
+			OrderedIn = { }
+		});
+
 	}
 
-	public async Task<Reservation?> GetByIdAsync(string id)
+	public async Task<ReservationDto?> GetByIdAsync(string id)
 	{
-		Reservation? reservation = await _context.Reservations.FindAsync(id);
+		Reservation? r = await _context.Reservations.FindAsync(id);
 
-		return reservation;
+		if (r == null)
+		{
+			return null;
+		}
+		return new ReservationDto
+		{
+			Id = r.Id,
+			CreatedAt = r.CreatedAt,
+			DateFrom = r.DateFrom,
+			DateTo = r.DateTo,
+			//TODO there is no setter
+			PaddleBoardReservations = {},
+			OrderedIn = { }
+		};
 	}
 }

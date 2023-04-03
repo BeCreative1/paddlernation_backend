@@ -1,10 +1,11 @@
 ﻿using Domain;
+using Domain.DTOs.Reservation;
 using Domain.DTOs.Search;
 
 namespace Application.LogicInterfaces;
 
 public interface IReservationLogic
 {
-	Task<IEnumerable<Reservation>> GetAsync();
-	Task<Reservation> GetByIdAsync(string id);
+	Task<IEnumerable<ReservationDto>> GetAsync();
+	Task<ReservationDto> GetByIdAsync(string id);
 }

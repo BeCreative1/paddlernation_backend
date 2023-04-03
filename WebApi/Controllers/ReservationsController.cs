@@ -1,5 +1,6 @@
 ﻿using Application.LogicInterfaces;
 using Domain;
+using Domain.DTOs.Reservation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -20,7 +21,7 @@ public class ReservationsController : ControllerBase
 	{
 		try
 		{
-			Reservation reservation = await _logic.GetByIdAsync(id);
+			ReservationDto reservation = await _logic.GetByIdAsync(id);
 
 			return Ok(reservation);
 		}
@@ -36,7 +37,7 @@ public class ReservationsController : ControllerBase
 	{
 		try
 		{
-			IEnumerable<Reservation> reservations = await _logic.GetAsync();
+			IEnumerable<ReservationDto> reservations = await _logic.GetAsync();
 
 			return Ok(reservations);
 		}
