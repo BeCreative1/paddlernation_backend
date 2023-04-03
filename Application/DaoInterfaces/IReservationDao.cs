@@ -6,5 +6,6 @@ namespace Application.DaoInterfaces;
 public interface IReservationDao
 {
 	Task<IEnumerable<ReservationDto>> GetAsync();
-	Task<ReservationDto?> GetByIdAsync(string id);
+	Task<ReservationDto?> GetByIdAsync(int id);
+	Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto);
 }

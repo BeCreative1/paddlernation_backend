@@ -1,8 +1,6 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
-using Domain;
 using Domain.DTOs.Reservation;
-using Domain.DTOs.Search;
 
 namespace Application.Logic;
 
@@ -22,7 +20,7 @@ public class ReservationLogic : IReservationLogic
 		return reservations;
 	}
 
-	public async Task<ReservationDto> GetByIdAsync(string id)
+	public async Task<ReservationDto> GetByIdAsync(int id)
 	{
 		ReservationDto? reservation = await _reservationDao.GetByIdAsync(id);
 
@@ -32,5 +30,41 @@ public class ReservationLogic : IReservationLogic
 		}
 
 		return reservation;
+	}
+
+	public async Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto)
+	{
+		Validate(reservationDto);
+
+		return await _reservationDao.CreateReservationAsync(reservationDto);
+
+	}
+
+	private void Validate(ReservationCreationDto dto)
+	{
+		// Validate input
+		if (dto == null)
+		{
+			throw new ArgumentNullException(nameof(dto));
+		}
+
+		//The start date must be before the end date.
+		if (dto.DateFrom >= dto.DateTo)
+		{
+			throw new Exception("The start date must be before the end date.");
+		}
+
+		//CreatedAt must be earlier than or equal to DateFrom:
+		if (dto.CreatedAt > dto.DateFrom)
+		{
+			throw new Exception("CreatedAt must be earlier than or equal to DateFrom");
+		}
+
+		//PaddleBoardReservations cannot be null or empty:
+		if (dto.PaddleBoardReservations == null || dto.PaddleBoardReservations.Count == 0)
+		{
+			throw new Exception("PaddleBoardReservations cannot be null or empty");
+		}
+
 	}
 }

@@ -7,5 +7,6 @@ namespace Application.LogicInterfaces;
 public interface IReservationLogic
 {
 	Task<IEnumerable<ReservationDto>> GetAsync();
-	Task<ReservationDto> GetByIdAsync(string id);
+	Task<ReservationDto> GetByIdAsync(int id);
+	Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto);
 }

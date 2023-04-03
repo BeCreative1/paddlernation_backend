@@ -31,7 +31,7 @@ public class ReservationDao : IReservationDao
 
 	}
 
-	public async Task<ReservationDto?> GetByIdAsync(string id)
+	public async Task<ReservationDto?> GetByIdAsync(int id)
 	{
 		Reservation? r = await _context.Reservations.FindAsync(id);
 
@@ -45,6 +45,32 @@ public class ReservationDao : IReservationDao
 			CreatedAt = r.CreatedAt,
 			DateFrom = r.DateFrom,
 			DateTo = r.DateTo,
+			//TODO there is no setter
+			PaddleBoardReservations = {},
+			OrderedIn = { }
+		};
+	}
+
+	public async Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto)
+	{
+		var reservationEntity = new Reservation
+		{
+			CreatedAt = reservationDto.CreatedAt,
+			DateFrom = reservationDto.DateFrom,
+			DateTo = reservationDto.DateTo,
+			//TODO there is no setter
+			// PaddleBoardReservations = reservationDto.PaddleBoardReservations,
+			// OrderedIn = reservationDto.OrderedIn
+		};
+		await _context.Reservations.AddAsync(reservationEntity);
+		await _context.SaveChangesAsync();
+
+		return new ReservationDto()
+		{
+			Id = reservationEntity.Id,
+			CreatedAt = reservationEntity.CreatedAt,
+			DateFrom = reservationEntity.DateFrom,
+			DateTo = reservationEntity.DateTo,
 			//TODO there is no setter
 			PaddleBoardReservations = {},
 			OrderedIn = { }

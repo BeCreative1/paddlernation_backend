@@ -17,7 +17,7 @@ public class ReservationsController : ControllerBase
 	}
 
 	[HttpGet("{id:int}")]
-	public async Task<ActionResult<Reservation>> GetByIdAsync([FromRoute] string id)
+	public async Task<ActionResult<Reservation>> GetByIdAsync([FromRoute] int id)
 	{
 		try
 		{
@@ -48,9 +48,18 @@ public class ReservationsController : ControllerBase
 		}
 	}
 
-	// [HttpPost]
-	// public async Task<ActionResult<Reservation> CreateAsync()
-	// {
-	//
-	// }
+	[HttpPost]
+	public async Task<ActionResult<ReservationDto>> CreateAsync(ReservationCreationDto dto)
+	{
+		try
+		{
+			ReservationDto created = await _logic.CreateReservationAsync(dto);
+			return Created($"/users/{created.Id}", created);
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			return StatusCode(500, e.Message);
+		}
+	}
 }
