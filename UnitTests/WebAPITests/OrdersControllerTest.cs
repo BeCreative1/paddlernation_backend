@@ -4,12 +4,15 @@ using Domain;
 using Domain.DTOs;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Controllers;
 using Moq;
 using Xunit;
+using Assert = Xunit.Assert;
 
 namespace xUnit.WebAPITests;
 
+[TestClass]
 public class OrdersControllerTests
 {
     private readonly Mock<IOrderLogic> orderLogicMock;
@@ -23,8 +26,8 @@ public class OrdersControllerTests
         orderController = new OrdersController(orderLogicMock.Object);
     }
 
-    [Fact]
-    public async Task CreateAsync_WithValidOrderCreationDto_ReturnsCreatedResponse()
+    [TestMethod]
+    public async Task CreateAsyncTest()
     {
         // Arrange
         var dto = new OrderCreationDto(120, 1, DateTime.Now, 1, 1, 1);
@@ -41,10 +44,10 @@ public class OrdersControllerTests
         orderLogicMock
             .Setup(x => x.CreateAsync(dto))
             .ReturnsAsync(order);
-
+    
         // Act
         var response = await orderController.CreateAsync(dto);
-
+    
         // Assert
         var createdResult = Assert.IsType<CreatedResult>(response.Result);
         var createdOrder = Assert.IsType<Order>(createdResult.Value);
