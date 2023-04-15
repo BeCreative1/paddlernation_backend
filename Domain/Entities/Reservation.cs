@@ -1,22 +1,41 @@
-﻿using Domain.Enums;
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain;
 
 public class Reservation
 {
+    [Key]
     public int Id { get; set; }
-    
     public DateTime CreatedAt { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
-    
-    public int ReservationTypeNumber { get; set; }
-    public ReservationType Type
+    public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
+    public Order OrderedIn { get; }
+
+    public Reservation(DateTime dateFrom, DateTime dateTo)
     {
-        get => (ReservationType)ReservationTypeNumber;
-        set => ReservationTypeNumber = (int)value;
+        DateFrom = dateFrom;
+        DateTo = dateTo;
+        CreatedAt = DateTime.Now;
+        PaddleBoardReservations = new List<PaddleBoardReservation>();
     }
 
-    public Order? Order { get; set; }
-    public ICollection<ReservationItem> ReservationItems { get; set; } = null!;
+    public Reservation(DateTime dateFrom, DateTime dateTo, Order orderedIn)
+    {
+        DateFrom = dateFrom;
+        DateTo = dateTo;
+        CreatedAt = DateTime.Now;
+        PaddleBoardReservations = new List<PaddleBoardReservation>();
+        OrderedIn = orderedIn;
+    }
+
+    public Reservation(DateTime dateFrom, DateTime dateTo, ICollection<PaddleBoardReservation> paddleBoardReservations, Order orderedIn)
+    {
+        DateFrom = dateFrom;
+        DateTo = dateTo;
+        PaddleBoardReservations = paddleBoardReservations;
+        CreatedAt = DateTime.Now;
+        OrderedIn = orderedIn;
+    }
 }
