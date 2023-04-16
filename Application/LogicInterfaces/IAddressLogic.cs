@@ -1,8 +1,8 @@
-﻿using Domain.Entities;
+﻿using Domain;
 
 namespace Application.LogicInterfaces;
 
 public interface IAddressLogic
 {
-    Task<DeliveryAddress?> GetByIdAsync(int id);
+    Task<Delivery?> GetByIdAsync(int id);
 }

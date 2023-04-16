@@ -8,9 +8,9 @@ namespace EfcDataAccess.DAOs;
 public class OrderEfcDao : IOrderDao
 {
 
-    private readonly PaddleBoardDbContext context;
+    private readonly PaddlerNationContext context;
 
-    public OrderEfcDao(PaddleBoardDbContext context)
+    public OrderEfcDao(PaddlerNationContext context)
     {
         this.context = context;
     }
@@ -24,8 +24,8 @@ public class OrderEfcDao : IOrderDao
 
     public async Task<Order?> GetByIdAsync(int id)
     {
-        Order? order = await context.Orders.AsNoTracking().Include(order => order.Customer)
-            .Include(order => order.DeliveryAddress)
+        Order? order = await context.Orders.AsNoTracking().Include(order => order.OrderedBy)
+            .Include(order => order.Delivery)
             .SingleOrDefaultAsync(order => order.Id == id);
         return order;
     }

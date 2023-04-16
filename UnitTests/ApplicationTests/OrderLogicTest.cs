@@ -1,18 +1,13 @@
-﻿using System.Data.Common;
-using Application.DaoInterfaces;
+﻿using Application.DaoInterfaces;
 using Application.Logic;
-using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs;
-using Domain.Entities;
-using EfcDataAccess;
 using EfcDataAccess.DAOs;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Xunit;
+
+
 using xUnit.Utils;
-using Assert = Xunit.Assert;
+
 
 namespace xUnit.ApplicationTests;
 
@@ -41,19 +36,19 @@ public class OrderLogicTest : DbTestBaseClass
         await PaddleBoardDb.Customers.AddAsync(customer);
         await PaddleBoardDb.SaveChangesAsync();
     
-        var address = new DeliveryAddress();
-        await PaddleBoardDb.DeliveryAddresses.AddAsync(address);
+        var address = new Delivery();
+        await PaddleBoardDb.Deliveries.AddAsync(address);
         await PaddleBoardDb.SaveChangesAsync();
     
-        var order = new OrderCreationDto(120, 0, DateTime.Now, 0, 1, 1);
+        var order = new OrderCreationDto(120, 0, DateTime.Now,  0, 1, 1);
         
         // Act
         var createdOrder = await _orderLogic.CreateAsync(order);
 
         // Assert
-        Assert.NotNull(createdOrder);
-        Assert.Equal(order.OwnerId, createdOrder.Customer.Id);
-        Assert.Equal(order.AddressId, createdOrder.DeliveryAddress.Id);
+        Assert.IsNotNull(createdOrder);
+        Assert.AreEqual(order.OwnerId, createdOrder.OrderedBy.Id);
+        Assert.AreEqual(order.AddressId, createdOrder.Delivery.Id);
     }
     
 }

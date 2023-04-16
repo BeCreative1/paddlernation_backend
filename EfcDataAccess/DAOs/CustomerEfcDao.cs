@@ -6,9 +6,9 @@ namespace EfcDataAccess.DAOs;
 
 public class CustomerEfcDao : ICustomerDao
 {
-    private readonly PaddleBoardDbContext context;
+    private readonly PaddlerNationContext context;
 
-    public CustomerEfcDao(PaddleBoardDbContext context)
+    public CustomerEfcDao(PaddlerNationContext context)
     {
         this.context = context;
     }

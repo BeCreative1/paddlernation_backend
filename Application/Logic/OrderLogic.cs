@@ -2,7 +2,6 @@
 using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs;
-using Domain.Entities;
 
 namespace Application.Logic;
 
@@ -23,13 +22,14 @@ public class OrderLogic : IOrderLogic
     {
         try
         {
+            //Reservation reservation = new Reservation(DateTime.Today,)
             Customer? customer = await customerDao.GetByIdAsync(dto.OwnerId);
             if (customer == null)
             {
                 throw new Exception($"Customer with id {dto.OwnerId} was not found");
             }
 
-            DeliveryAddress? deliveryAddress = await addressDao.GetByIdAsync(dto.AddressId);
+            Delivery? deliveryAddress = await addressDao.GetByIdAsync(dto.AddressId);
             if (deliveryAddress == null)
             {
                 throw new Exception($"Address with id {dto.AddressId} was not found");
@@ -37,13 +37,13 @@ public class OrderLogic : IOrderLogic
             
             
             ValidateOrder(dto);
-            Order orderToCreate = new Order()
+            Order orderToCreate = new Order
             {
-                CreatedAt = dto.CreatedAt,
-                Customer = customer,
-                DeliveryAddress = deliveryAddress
-                //TODO missing data
+                OrderedBy = customer,
+                Delivery = deliveryAddress,
+                
             };
+
             Order created = await orderDao.CreateAsync(orderToCreate);
             return created;
         }

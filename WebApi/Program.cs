@@ -22,7 +22,7 @@ builder.Services.AddScoped<ICustomerDao, CustomerEfcDao>();
 builder.Services.AddScoped<ICustomerLogic, CustomerLogic>();
 
 
-builder.Services.AddDbContext<PaddleBoardDbContext>();
+builder.Services.AddDbContext<PaddlerNationContext>();
 
 var app = builder.Build();
 

@@ -16,5 +16,7 @@
     &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest.CreateAsyncTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest.OrderCreateAsyncTest&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.OrdersControllerTests.CreateAsyncTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.OrderLogicTest&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.OrdersControllerTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

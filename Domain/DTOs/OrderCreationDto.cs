@@ -3,19 +3,19 @@
 public class OrderCreationDto
 {
     public int TotalPrice { get; }
-    public int PaymentMethod { get;}
+    public PaymentMethod PaymentMethod { get;}
     public DateTime CreatedAt { get;}
-    public int PaymentStage { get;}
+    public PaymentStage PaymentStage { get;}
     public int OwnerId { get; }
     public int AddressId { get; }
 
-    public OrderCreationDto(int totalPrice, int paymentMethod, DateTime createdAt, int paymentStage, int ownerId, int addressId)
+    public OrderCreationDto(int totalPrice, PaymentMethod paymentMethod, DateTime createdAt, PaymentStage paymentStage, int ownerId, int addressId)
     {
         TotalPrice = totalPrice;
         PaymentMethod = paymentMethod;
-        CreatedAt = createdAt;
         PaymentStage = paymentStage;
         OwnerId = ownerId;
         AddressId = addressId;
+        CreatedAt = DateTime.Now;
     }
 }

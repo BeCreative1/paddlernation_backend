@@ -6,7 +6,7 @@ namespace xUnit.Utils;
 
 public class DbTestBaseClass
 {
-    public PaddleBoardDbContext PaddleBoardDb { get; private set; }
+    public PaddlerNationContext PaddleBoardDb { get; private set; }
 
     [TestInitialize]
     public virtual void TestInit()
@@ -18,7 +18,7 @@ public class DbTestBaseClass
     }
 
 
-    private class PaddleBoardDbContextInMemory : PaddleBoardDbContext
+    private class PaddleBoardDbContextInMemory : PaddlerNationContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -2,13 +2,11 @@
 using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs;
-using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Controllers;
 using Moq;
-using Xunit;
-using Assert = Xunit.Assert;
+
 
 namespace xUnit.WebAPITests;
 
@@ -30,15 +28,14 @@ public class OrdersControllerTests
     public async Task CreateAsyncTest()
     {
         // Arrange
-        var dto = new OrderCreationDto(120, 1, DateTime.Now, 1, 1, 1);
-        var order = new Order {         
+        var dto = new OrderCreationDto(120, PaymentMethod.MobilePay, DateTime.Now,  PaymentStage.Paid, 1, 1);
+        var order = new Order{         
             Id = 1,
             TotalPrice = dto.TotalPrice,
             PaymentMethod = dto.PaymentMethod,
-            CreatedAt = dto.CreatedAt,
             PaymentStage = dto.PaymentStage,
-            Customer = new Customer(),
-            DeliveryAddress = new DeliveryAddress()
+            OrderedBy = new Customer(),
+            Delivery = new Delivery()
         };
         
         orderLogicMock
@@ -48,23 +45,24 @@ public class OrdersControllerTests
         // Act
         var response = await orderController.CreateAsync(dto);
     
-        // Assert
-        var createdResult = Assert.IsType<CreatedResult>(response.Result);
-        var createdOrder = Assert.IsType<Order>(createdResult.Value);
-        Assert.Equal(order, createdOrder);
-        Assert.Equal($"/orders/{order.Id}", createdResult.Location);
+        
+        var createdResult = response.Result as CreatedResult;
+        Assert.IsNotNull(createdResult);
+        var createdOrder = createdResult.Value as Order;
+        Assert.IsNotNull(createdOrder);
+        Assert.AreEqual(order, createdOrder);
+        Assert.AreEqual($"/orders/{order.Id}", createdResult.Location);
     }
 
-    [Fact]
+    [TestMethod]
     public async Task CreateAsync_WithInvalidOrderCreationDto_ThrowsException()
     {
         // Arrange
-        var dto = new OrderCreationDto(120, 1, DateTime.Now, 1, 3, 3);
+        var dto = new OrderCreationDto(120, PaymentMethod.CreditCard , DateTime.Now, PaymentStage.Paid, 3, 3);
         orderLogicMock
             .Setup(x => x.CreateAsync(dto))
             .ThrowsAsync(new ArgumentException());
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => orderController.CreateAsync(dto));
-    }
+        await Assert.ThrowsExceptionAsync<Exception>(async () => await orderController.CreateAsync(dto));    }
 }

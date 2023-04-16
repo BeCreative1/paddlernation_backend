@@ -1,20 +1,20 @@
 ﻿using Application.DaoInterfaces;
-using Domain.Entities;
+using Domain;
 
 namespace EfcDataAccess.DAOs;
 
 public class AddressEfcDao : IAddressDao
 {
-    private readonly PaddleBoardDbContext context;
+    private readonly PaddlerNationContext context;
 
-    public AddressEfcDao(PaddleBoardDbContext context)
+    public AddressEfcDao(PaddlerNationContext context)
     {
         this.context = context;
     }
 
-    public async Task<DeliveryAddress> GetByIdAsync(int id)
+    public async Task<Delivery> GetByIdAsync(int id)
     {
-        DeliveryAddress? address = await context.DeliveryAddresses.FindAsync(id);
+        Delivery? address = await context.Deliveries.FindAsync(id);
         return address;
     }
 }

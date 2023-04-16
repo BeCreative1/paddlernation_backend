@@ -1,14 +1,24 @@
-﻿namespace Domain;
+﻿using System.ComponentModel.DataAnnotations;
 
-public class PaddleboardType
+namespace Domain;
+
+public class PaddleBoardType
 {
+    [Key]
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public int Price { get; set; }
-    public int MinCapacity { get; set; }
-    public int MaxCapacity { get; set; }
-    public int Quantity { get; set; }
+    public string NameOfType { get; set; }
     
-    
-    public ICollection<ReservationItem>? ReservationItems { get; set; }
+    public ICollection<PaddleBoard> PaddleBoards { get; }
+
+    public PaddleBoardType(string nameOfType)
+    {
+        NameOfType = nameOfType;
+        PaddleBoards = new List<PaddleBoard>();
+    }
+
+    public PaddleBoardType(string nameOfType, ICollection<PaddleBoard> paddleBoards)
+    {
+        NameOfType = nameOfType;
+        PaddleBoards = paddleBoards;
+    }
 }

@@ -1,9 +1,9 @@
-﻿using Domain.Entities;
+﻿using Domain;
 
 namespace Application.DaoInterfaces;
 
 public interface IAddressDao
 {
-    Task<DeliveryAddress> GetByIdAsync(int id);
+    Task<Delivery> GetByIdAsync(int id);
 
 }

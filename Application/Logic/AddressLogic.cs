@@ -1,6 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Application.LogicInterfaces;
-using Domain.Entities;
+using Domain;
 
 namespace Application.Logic;
 
@@ -13,9 +13,9 @@ public class AddressLogic : IAddressLogic
         this.addressDao = addressDao;
     }
 
-    public async Task<DeliveryAddress?> GetByIdAsync(int id)
+    public async Task<Delivery?> GetByIdAsync(int id)
     {
-        DeliveryAddress? address = await addressDao.GetByIdAsync(id);
+        Delivery? address = await addressDao.GetByIdAsync(id);
         if (address == null)
         {
             throw new Exception($"Address with id {id} was not found");
