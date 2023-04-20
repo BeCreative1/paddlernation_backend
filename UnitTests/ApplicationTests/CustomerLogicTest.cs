@@ -3,6 +3,7 @@ using Application.Logic;
 using Domain;
 using Domain.DTOs;
 using EfcDataAccess.DAOs;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using xUnit.Utils;
 
@@ -25,11 +26,12 @@ public class CustomerLogicTest : DbTestBaseClass
     public async Task CustomerCreateAsyncTest()
     {
         //Arrange
-        var customerToCreate = new CustomerCreationDto { FullName = "John", Email = "john@example.com", Phone = "1234567890" };
+        CustomerCreationDto customerToCreate = new CustomerCreationDto { FullName = "John", Email = "john@example.com", Phone = "1234567890" };
         //Act
         var customerId = await _customerLogic.CreateAsync(customerToCreate);
         //Assert
         Assert.IsNotNull(customerId);
+        Assert.IsNotNull(await PaddleBoardDb.Customers.FindAsync(customerId));
     }
     
     [TestMethod]

@@ -27,7 +27,7 @@ public class CustomerEfcDao : ICustomerDao
 
     public async  Task<int> CustomerExistsAsync(Customer customer)
     {
-        var existingCustomer = await _context.Customers.FirstOrDefaultAsync(c => c.FullName.Equals(customer.FullName) && c.Email.Equals(customer.Email) && c.Phone.Equals(customer.Phone));
+        var existingCustomer = _context.Customers.Local.SingleOrDefault(c => c.FullName.Equals(customer.FullName) && c.Email.Equals(customer.Email) && c.Phone.Equals(customer.Phone));
 
         if (existingCustomer is not null)
             return existingCustomer.Id;
