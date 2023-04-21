@@ -23,7 +23,7 @@ public class CustomerLogic : ICustomerLogic
             Phone = dto.Phone,
         };
 
-        var customerId = await CustomerExistsAsync(customer);
+        var customerId = await customerDao.CustomerExistsAsync(customer);
 
         if (customerId <= 0)
             customerId = await customerDao.CreateAsync(customer);
@@ -41,10 +41,4 @@ public class CustomerLogic : ICustomerLogic
 
         return customer;
     }
-
-    private async Task<int> CustomerExistsAsync(Customer customer)
-    {
-        return await customerDao.CustomerExistsAsync(customer);
-    }
-    
 }
