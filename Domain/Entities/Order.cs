@@ -11,9 +11,9 @@ public class Order
     public Reservation Reservation { get; }
     public IEnumerable<ExtrasOrder> ExtrasOrders { get; }
     public int? OrderedByID { get; }
-    public Customer? OrderedBy { get; }
+    public Customer? OrderedBy { get; set; }
     public int? DeliveryID { get; }
-    public Delivery? Delivery { get; }
+    public Delivery? Delivery { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public PaymentStage PaymentStage { get; set; }
 
@@ -42,4 +42,6 @@ public class Order
     //     OrderedByID = orderedBy.Id;
     //     DeliveryID = Delivery.Id;
     // }
+
+
 }

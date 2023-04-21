@@ -165,6 +165,7 @@ namespace EfcDataAccess.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalPrice = table.Column<double>(type: "REAL", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ReservationId = table.Column<int>(type: "INTEGER", nullable: false),
                     OrderedByID = table.Column<int>(type: "INTEGER", nullable: true),
                     DeliveryID = table.Column<int>(type: "INTEGER", nullable: true),
@@ -201,7 +202,7 @@ namespace EfcDataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PaddleBoardReservations", x => new { x.ReservationID, x.PadleBoardID });
+                    table.PrimaryKey("PK_PaddleBoardReservations", x => new { x.PadleBoardID, x.ReservationID });
                     table.ForeignKey(
                         name: "FK_PaddleBoardReservations_PaddleBoards_PadleBoardID",
                         column: x => x.PadleBoardID,
@@ -272,9 +273,9 @@ namespace EfcDataAccess.Migrations
                 column: "ReservationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaddleBoardReservations_PadleBoardID",
+                name: "IX_PaddleBoardReservations_ReservationID",
                 table: "PaddleBoardReservations",
-                column: "PadleBoardID");
+                column: "ReservationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaddleBoards_PaddleBoardTypeID",
