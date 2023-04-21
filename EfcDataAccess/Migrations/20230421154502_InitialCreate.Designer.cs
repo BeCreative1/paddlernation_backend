@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfcDataAccess.Migrations
 {
     [DbContext(typeof(PaddlerNationContext))]
-    [Migration("20230416182016_looking123456")]
-    partial class looking123456
+    [Migration("20230421154502_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,6 +202,9 @@ namespace EfcDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<double>("TotalPrice")
                         .HasColumnType("REAL");
 
@@ -210,6 +213,8 @@ namespace EfcDataAccess.Migrations
                     b.HasIndex("DeliveryID");
 
                     b.HasIndex("OrderedByID");
+
+                    b.HasIndex("ReservationId");
 
                     b.ToTable("Orders");
                 });
@@ -248,15 +253,15 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.PaddleBoardReservation", b =>
                 {
-                    b.Property<int>("ReservationID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("PadleBoardID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ReservationID", "PadleBoardID");
+                    b.Property<int>("ReservationID")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("PadleBoardID");
+                    b.HasKey("PadleBoardID", "ReservationID");
+
+                    b.HasIndex("ReservationID");
 
                     b.ToTable("PaddleBoardReservations");
                 });
@@ -291,12 +296,7 @@ namespace EfcDataAccess.Migrations
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OrderedInId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OrderedInId");
 
                     b.ToTable("Reservations");
                 });
@@ -352,9 +352,17 @@ namespace EfcDataAccess.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("OrderedByID");
 
+                    b.HasOne("Domain.Reservation", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Delivery");
 
                     b.Navigation("OrderedBy");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.PaddleBoard", b =>
@@ -387,17 +395,6 @@ namespace EfcDataAccess.Migrations
                     b.Navigation("Reservation");
                 });
 
-            modelBuilder.Entity("Domain.Reservation", b =>
-                {
-                    b.HasOne("Domain.Order", "OrderedIn")
-                        .WithMany("Reservations")
-                        .HasForeignKey("OrderedInId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderedIn");
-                });
-
             modelBuilder.Entity("Domain.Address", b =>
                 {
                     b.Navigation("Deliveries");
@@ -423,8 +420,6 @@ namespace EfcDataAccess.Migrations
             modelBuilder.Entity("Domain.Order", b =>
                 {
                     b.Navigation("ExtrasOrders");
-
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("Domain.PaddleBoard", b =>

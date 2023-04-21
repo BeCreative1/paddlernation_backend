@@ -1,7 +1,6 @@
 using Application.DaoInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
-using Domain;
 using EfcDataAccess;
 using EfcDataAccess.DAOs;
 
@@ -13,6 +12,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// register services
+builder.Services.AddScoped<IReservationDao, ReservationDao>();
+builder.Services.AddScoped<IReservationLogic, ReservationLogic>();
+
 
 builder.Services.AddScoped<IOrderDao, OrderEfcDao>();
 builder.Services.AddScoped<IOrderLogic, OrderLogic>();

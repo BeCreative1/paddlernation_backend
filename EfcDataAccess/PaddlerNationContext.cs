@@ -30,81 +30,81 @@ public class PaddlerNationContext : DbContext
         modelBuilder.Entity<Customer>()
             .Property(c => c.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<PaddleBoard>()
             .Property(pb => pb.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<PaddleBoardType>()
             .Property(pbt => pbt.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Reservation>()
             .Property(r => r.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Order>()
             .Property(o => o.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Extra>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Delivery>()
             .Property(d => d.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Address>()
             .Property(a => a.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<Event>()
             .Property(e => e.Id)
             .ValueGeneratedOnAdd();
-        
+
         // Assigning Keys v
-        
+
         // ExtrasOrder foreign  keys
         modelBuilder.Entity<ExtrasOrder>()
             .HasKey(eo => new {eo.ExtrasID, eo.OrderID});
-        
+
         // PaddleBoardReservation foreign  keys
         modelBuilder.Entity<PaddleBoardReservation>()
             .HasKey(pbr => new {pbr.ReservationID, pbr.PadleBoardID});
 
-            // --- --- ---   --- --- ---   --- --- ---
-        
+        // --- --- ---   --- --- ---   --- --- ---
+
         // RELATIONS v
-        
+
         //Events --one--> Address
         //Address --many--> Events
         modelBuilder.Entity<Event>()
             .HasOne(e => e.HeldAt)
             .WithMany(a => a.Events)
             .HasForeignKey(e => e.HeldAtID);
-        
+
         //Delivery --one--> Address
         //Address --many--> Delivery
         modelBuilder.Entity<Delivery>()
             .HasOne(d => d.At)
             .WithMany(a => a.Deliveries)
             .HasForeignKey(d => d.AtID);
-        
+
         //Order --one--> Delivery
         //Delivery --many--> Order
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Delivery)
             .WithMany(d => d.Orders)
             .HasForeignKey(o => o.DeliveryID);
-        
+
         //Order --one--> Customer
         //Customer --many--> Order
         modelBuilder.Entity<Order>()
             .HasOne(o => o.OrderedBy)
             .WithMany(c => c.Orders)
             .HasForeignKey(o => o.OrderedByID);
-        
+
         // Order <--many--> Extras
         modelBuilder.Entity<ExtrasOrder>()
             .HasOne(eo => eo.Extra)
@@ -114,32 +114,35 @@ public class PaddlerNationContext : DbContext
             .HasOne(eo => eo.Order)
             .WithMany(o => o.ExtrasOrders)
             .HasForeignKey(eo => eo.OrderID);
-        
+
         // Reservation --one--> Order
         // Order --many--> Reservations
-        modelBuilder.Entity<Reservation>()
-            .HasOne(r => r.OrderedIn)
-            .WithMany(o=> o.Reservations);
-        
+        modelBuilder.Entity<Order>()
+	        .HasOne(o => o.Reservation);
+
         // Reservation <--many--> PaddleBoards
+        modelBuilder.Entity<PaddleBoardReservation>()
+	        .HasKey(pr => new { pr.PadleBoardID, pr.ReservationID });
+
         modelBuilder.Entity<PaddleBoardReservation>()
             .HasOne(pbr => pbr.Reservation)
             .WithMany(r => r.PaddleBoardReservations)
             .HasForeignKey(pbr => pbr.ReservationID);
+
         modelBuilder.Entity<PaddleBoardReservation>()
             .HasOne(pbr => pbr.PaddleBoard)
             .WithMany(pb => pb.PaddleBoardReservations)
             .HasForeignKey(pbr => pbr.PadleBoardID);
-        
+
         //PaddleBoard --one--> PaddleBoardType
         //PaddleBoardTyp --many--> PaddleBoard
         modelBuilder.Entity<PaddleBoard>()
             .HasOne(pb => pb.PaddleBoardType)
             .WithMany(pbt => pbt.PaddleBoards)
             .HasForeignKey(pb => pb.PaddleBoardTypeID);
-        
+
         // --- --- ---   --- --- ---   --- --- ---
-        
+
         // Enum Conversion v
 
         //PaymentMethod enum conversion
@@ -147,7 +150,7 @@ public class PaddlerNationContext : DbContext
             .Property(e => e.PaymentMethod)
             .HasConversion(v => v.ToString(),
                 v => (PaymentMethod) Enum.Parse(typeof(PaymentMethod), v));
-        
+
         //PaymentStage enum conversion
         modelBuilder.Entity<Order>()
             .Property(e => e.PaymentStage)

@@ -8,7 +8,7 @@ public class Order
     public int Id { get; set; }
     public double TotalPrice { get; set; }
     public DateTime CreatedAt { get; set; }
-    public IEnumerable<Reservation> Reservations { get; }
+    public Reservation Reservation { get; }
     public IEnumerable<ExtrasOrder> ExtrasOrders { get; }
     public int? OrderedByID { get; }
     public Customer? OrderedBy { get; set; }

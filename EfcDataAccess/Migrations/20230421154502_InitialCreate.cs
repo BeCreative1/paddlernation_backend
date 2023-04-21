@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EfcDataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class looking123456 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -69,6 +69,21 @@ namespace EfcDataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaddleBoardTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateFrom = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    DateTo = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,6 +166,7 @@ namespace EfcDataAccess.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     TotalPrice = table.Column<double>(type: "REAL", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ReservationId = table.Column<int>(type: "INTEGER", nullable: false),
                     OrderedByID = table.Column<int>(type: "INTEGER", nullable: true),
                     DeliveryID = table.Column<int>(type: "INTEGER", nullable: true),
                     PaymentMethod = table.Column<string>(type: "TEXT", nullable: false),
@@ -169,6 +185,36 @@ namespace EfcDataAccess.Migrations
                         column: x => x.DeliveryID,
                         principalTable: "Deliveries",
                         principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Orders_Reservations_ReservationId",
+                        column: x => x.ReservationId,
+                        principalTable: "Reservations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaddleBoardReservations",
+                columns: table => new
+                {
+                    PadleBoardID = table.Column<int>(type: "INTEGER", nullable: false),
+                    ReservationID = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaddleBoardReservations", x => new { x.PadleBoardID, x.ReservationID });
+                    table.ForeignKey(
+                        name: "FK_PaddleBoardReservations_PaddleBoards_PadleBoardID",
+                        column: x => x.PadleBoardID,
+                        principalTable: "PaddleBoards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaddleBoardReservations_Reservations_ReservationID",
+                        column: x => x.ReservationID,
+                        principalTable: "Reservations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,52 +238,6 @@ namespace EfcDataAccess.Migrations
                         name: "FK_ExtrasOrders_Orders_OrderID",
                         column: x => x.OrderID,
                         principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateFrom = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    DateTo = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    OrderedInId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Orders_OrderedInId",
-                        column: x => x.OrderedInId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PaddleBoardReservations",
-                columns: table => new
-                {
-                    PadleBoardID = table.Column<int>(type: "INTEGER", nullable: false),
-                    ReservationID = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaddleBoardReservations", x => new { x.ReservationID, x.PadleBoardID });
-                    table.ForeignKey(
-                        name: "FK_PaddleBoardReservations_PaddleBoards_PadleBoardID",
-                        column: x => x.PadleBoardID,
-                        principalTable: "PaddleBoards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PaddleBoardReservations_Reservations_ReservationID",
-                        column: x => x.ReservationID,
-                        principalTable: "Reservations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,19 +268,19 @@ namespace EfcDataAccess.Migrations
                 column: "OrderedByID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PaddleBoardReservations_PadleBoardID",
+                name: "IX_Orders_ReservationId",
+                table: "Orders",
+                column: "ReservationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaddleBoardReservations_ReservationID",
                 table: "PaddleBoardReservations",
-                column: "PadleBoardID");
+                column: "ReservationID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PaddleBoards_PaddleBoardTypeID",
                 table: "PaddleBoards",
                 column: "PaddleBoardTypeID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_OrderedInId",
-                table: "Reservations",
-                column: "OrderedInId");
         }
 
         /// <inheritdoc />
@@ -299,22 +299,22 @@ namespace EfcDataAccess.Migrations
                 name: "Extras");
 
             migrationBuilder.DropTable(
-                name: "PaddleBoards");
-
-            migrationBuilder.DropTable(
-                name: "Reservations");
-
-            migrationBuilder.DropTable(
-                name: "PaddleBoardTypes");
-
-            migrationBuilder.DropTable(
                 name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "PaddleBoards");
 
             migrationBuilder.DropTable(
                 name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Deliveries");
+
+            migrationBuilder.DropTable(
+                name: "Reservations");
+
+            migrationBuilder.DropTable(
+                name: "PaddleBoardTypes");
 
             migrationBuilder.DropTable(
                 name: "Addresses");
