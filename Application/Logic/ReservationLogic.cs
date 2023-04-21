@@ -8,12 +8,12 @@ namespace Application.Logic;
 public class ReservationLogic : IReservationLogic
 {
 	private readonly IReservationDao _reservationDao;
-	private readonly IPaddleBoardLogic _paddleBoardLogic;
+	// private readonly IPaddleBoardLogic _paddleBoardLogic;
 
-	public ReservationLogic(IReservationDao reservationDao, IPaddleBoardLogic paddleBoardLogic)
+	public ReservationLogic(IReservationDao reservationDao)
 	{
 		_reservationDao = reservationDao;
-		_paddleBoardLogic = paddleBoardLogic;
+		// _paddleBoardLogic = paddleBoardLogic;
 	}
 
 	public async Task<IEnumerable<ReservationDto>> GetAsync()
