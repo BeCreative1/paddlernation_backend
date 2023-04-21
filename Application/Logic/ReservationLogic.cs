@@ -85,7 +85,15 @@ public class ReservationLogic : IReservationLogic
 		//PaddleBoardReservations cannot be null or empty:
 		if (dto.PaddleBoardIds == null || dto.PaddleBoardIds.Count == 0)
 		{
-			throw new Exception("PaddleBoardReservations cannot be null or empty");
+			throw new Exception("PaddleBoardReservations cannot be null or empty!");
+		}
+
+		foreach (var id in dto.PaddleBoardIds)
+		{
+			if (id <= 0)
+			{
+				throw new Exception("Invalid PaddleBoard Id!");
+			}
 		}
 
 	}
