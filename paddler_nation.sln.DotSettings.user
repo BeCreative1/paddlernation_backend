@@ -1,5 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b948ef6f_002D99c3_002D462a_002Dba96_002Db01d075dde6c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;UnitTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
-  &lt;Project Location="C:\Users\Darko\Desktop\Web_Development\Back_End\Jobs\BeCreative[David-PaddlebordNation]\paddler_nation\UnitTests" Presentation="&amp;lt;UnitTests&amp;gt;" /&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.ReservationTests&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.ReservationsControllerTests&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.ReservationsControllerTests.CreateAsync_ReturnsCreatedAtActionResult_WhenModelIsValid&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.ReservationsControllerTests.CreateAsync_IsCreated&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.ReservationsControllerTests.GetAsync&lt;/TestId&gt;
+    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.WebAPITests.ReservationsControllerTests.GetByIdAsync&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

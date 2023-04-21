@@ -11,7 +11,7 @@ public class Reservation
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
     public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
-    public Order OrderedIn { get; }
+    // public Order OrderedIn { get; }
 
     // public Reservation(DateTime dateFrom, DateTime dateTo)
     // {

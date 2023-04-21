@@ -2,6 +2,7 @@ using Application.DaoInterfaces;
 using Domain;
 using Domain.DTOs.Reservation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EfcDataAccess.DAOs;
 
@@ -24,9 +25,7 @@ public class ReservationDao : IReservationDao
 			CreatedAt = r.CreatedAt,
 			DateFrom = r.DateFrom,
 			DateTo = r.DateTo,
-			//TODO there is no setter
-			PaddleBoardReservations = {},
-			OrderedIn = { }
+			PaddleBoardReservations = r.PaddleBoardReservations,
 		});
 
 	}
@@ -45,35 +44,15 @@ public class ReservationDao : IReservationDao
 			CreatedAt = r.CreatedAt,
 			DateFrom = r.DateFrom,
 			DateTo = r.DateTo,
-			//TODO there is no setter
-			PaddleBoardReservations = {},
-			OrderedIn = { }
+			PaddleBoardReservations = r.PaddleBoardReservations,
 		};
 	}
 
-	public async Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto)
+	public async Task<Reservation> CreateReservationAsync(Reservation reservation)
 	{
-		var reservationEntity = new Reservation
-		{
-			CreatedAt = reservationDto.CreatedAt,
-			DateFrom = reservationDto.DateFrom,
-			DateTo = reservationDto.DateTo,
-			//TODO there is no setter
-			// PaddleBoardReservations = reservationDto.PaddleBoardReservations,
-			// OrderedIn = reservationDto.OrderedIn
-		};
-		await _context.Reservations.AddAsync(reservationEntity);
+		EntityEntry<Reservation> entity = await _context.Reservations.AddAsync(reservation);
 		await _context.SaveChangesAsync();
 
-		return new ReservationDto()
-		{
-			Id = reservationEntity.Id,
-			CreatedAt = reservationEntity.CreatedAt,
-			DateFrom = reservationEntity.DateFrom,
-			DateTo = reservationEntity.DateTo,
-			//TODO there is no setter
-			PaddleBoardReservations = {},
-			OrderedIn = { }
-		};
+		return entity.Entity;
 	}
 }

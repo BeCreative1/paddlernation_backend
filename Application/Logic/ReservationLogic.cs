@@ -1,5 +1,6 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
+using Domain;
 using Domain.DTOs.Reservation;
 
 namespace Application.Logic;
@@ -7,10 +8,12 @@ namespace Application.Logic;
 public class ReservationLogic : IReservationLogic
 {
 	private readonly IReservationDao _reservationDao;
+	private readonly IPaddleBoardLogic _paddleBoardLogic;
 
-	public ReservationLogic(IReservationDao reservationDao)
+	public ReservationLogic(IReservationDao reservationDao, IPaddleBoardLogic paddleBoardLogic)
 	{
 		_reservationDao = reservationDao;
+		_paddleBoardLogic = paddleBoardLogic;
 	}
 
 	public async Task<IEnumerable<ReservationDto>> GetAsync()
@@ -36,7 +39,28 @@ public class ReservationLogic : IReservationLogic
 	{
 		Validate(reservationDto);
 
-		return await _reservationDao.CreateReservationAsync(reservationDto);
+		var reservation = new Reservation()
+		{
+			CreatedAt = DateTime.UtcNow,
+			DateFrom = reservationDto.DateFrom,
+			DateTo = reservationDto.DateTo
+		};
+
+		foreach (var id in reservationDto.PaddleBoardIds)
+		{
+			// reservation.PaddleBoardReservations.Add(_paddleBoardLogic.getAsync(id));
+		}
+
+		var created = await _reservationDao.CreateReservationAsync(reservation);
+
+		return new ReservationDto()
+		{
+			Id = created.Id,
+			CreatedAt = created.CreatedAt,
+			DateFrom = created.DateFrom,
+			DateTo = created.DateTo,
+			PaddleBoardReservations = created.PaddleBoardReservations,
+		};
 
 	}
 
@@ -54,14 +78,8 @@ public class ReservationLogic : IReservationLogic
 			throw new Exception("The start date must be before the end date.");
 		}
 
-		//CreatedAt must be earlier than or equal to DateFrom:
-		if (dto.CreatedAt > dto.DateFrom)
-		{
-			throw new Exception("CreatedAt must be earlier than or equal to DateFrom");
-		}
-
 		//PaddleBoardReservations cannot be null or empty:
-		if (dto.PaddleBoardReservations == null || dto.PaddleBoardReservations.Count == 0)
+		if (dto.PaddleBoardIds == null || dto.PaddleBoardIds.Count == 0)
 		{
 			throw new Exception("PaddleBoardReservations cannot be null or empty");
 		}

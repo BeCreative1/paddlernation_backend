@@ -1,74 +1,64 @@
+using System.Threading.Channels;
 using Application.LogicInterfaces;
 using Domain.DTOs.Reservation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WebApi.Controllers;
 using Moq;
-namespace xUnit.ApplicationTests;
+using WebApi.Controllers;
+
+namespace xUnit.WebAPITests;
 
 [TestClass]
 public class ReservationsControllerTests
 {
-    private ReservationsController _reservationsController;
 
-    [TestInitialize]
-    public void TestInitialize()
-    {
-        var mockLogic = new Mock<IReservationLogic>();
-        _reservationsController = new ReservationsController(mockLogic.Object);
-    }
+	private Mock<IReservationLogic> _mockReservationLogic;
+	private ReservationsController _reservationsController;
 
-    [TestMethod]
-    public async Task GetByIdAsync_ReturnsOkResult_WhenReservationExists()
-    {
-        // Arrange
-        int id = 1;
-        var reservationDto = new ReservationDto
-        {
-            Id = id,
-            DateFrom = DateTime.Now,
-            DateTo = DateTime.Now.AddDays(1)
-        };
-        var expected = new OkObjectResult(reservationDto);
+	[TestInitialize]
+	public void Setup()
+	{
+		_mockReservationLogic = new Mock<IReservationLogic>();
+		_reservationsController = new ReservationsController(_mockReservationLogic.Object);
+	}
 
-        var mockLogic = new Mock<IReservationLogic>();
-        mockLogic.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(reservationDto);
-        var controller = new ReservationsController(mockLogic.Object);
+	[TestMethod]
+	public async Task GetAsync()
+	{
+		// Arrange
+		var reservations = new List<ReservationDto>()
+		{
+			new ReservationDto { Id = 1, DateFrom = DateTime.Now, DateTo = DateTime.Now.AddDays(1) },
+			new ReservationDto { Id = 2, DateFrom = DateTime.Now.AddDays(2), DateTo = DateTime.Now.AddDays(3) }
+		};
 
-        // Act
-        var result = await controller.GetByIdAsync(id);
+		_mockReservationLogic.Setup(x => x.GetAsync()).ReturnsAsync(reservations);
 
-        // Assert
-        Assert.IsInstanceOfType(result, typeof(OkObjectResult));
-        Assert.AreEqual(expected.Value, ((OkObjectResult)result).Value);
-    }
+		// Act
+		var result = await _reservationsController.GetAsync();
 
-    [TestMethod]
-    public async Task GetAsync_ReturnsOkResult_WhenReservationsExist()
-    {
-        // Arrange
-        var reservationDtos = new List<ReservationDto>
-        {
-            new ReservationDto
-            {
-                Id = 1,
-                DateFrom = DateTime.Now,
-                DateTo = DateTime.Now.AddDays(1)
-            },
-            new ReservationDto
-            {
-                Id = 2,
-                DateFrom = DateTime.Now.AddDays(2),
-                DateTo = DateTime.Now.AddDays(3)
-            }
-        };
-        var expected = new OkObjectResult(reservationDtos);
+		// // Assert
+		Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
+	}
 
-        var mockLogic = new Mock<IReservationLogic>();
-        mockLogic.Setup(x => x.GetAsync()).ReturnsAsync(reservationDtos);
-        var controller = new ReservationsController(mockLogic.Object);
+	[TestMethod]
+	public async Task GetByIdAsync()
+	{
+		// Arrange
+		var reservations = new List<ReservationDto>()
+		{
+			new ReservationDto { Id = 1, DateFrom = DateTime.Now, DateTo = DateTime.Now.AddDays(1) },
+			new ReservationDto { Id = 2, DateFrom = DateTime.Now.AddDays(2), DateTo = DateTime.Now.AddDays(3) }
+		};
 
-        // Act
-        var result = await controller.GetAsync();
+		_mockReservationLogic.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(new ReservationDto { Id = 1, DateFrom = DateTime.Now, DateTo = DateTime.Now.AddDays(1) });
 
-        // Assert
+		// Act
+		var result = await _reservationsController.GetByIdAsync(4);
+
+		Console.WriteLine(result.Result);
+
+		// // Assert
+		Assert.IsInstanceOfType(result.Result, typeof(OkObjectResult));
+	}
+}

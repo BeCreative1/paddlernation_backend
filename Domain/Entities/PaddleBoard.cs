@@ -15,25 +15,25 @@ public class PaddleBoard
 
     public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
 
-    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive)
-    {
-        Name = name;
-        Price = price;
-        MinCapacity = minCapacity;
-        MaxCapacity = maxCapacity;
-        IsActive = isActive;
-    }
-
-    public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive,
-        PaddleBoardType paddleBoardType, ICollection<PaddleBoardReservation> paddleBoardReservations)
-    {
-        Name = name;
-        Price = price;
-        MinCapacity = minCapacity;
-        MaxCapacity = maxCapacity;
-        IsActive = isActive;
-        PaddleBoardType = paddleBoardType;
-        PaddleBoardTypeID = paddleBoardType.Id;
-        PaddleBoardReservations = paddleBoardReservations;
-    }
+    // public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive)
+    // {
+    //     Name = name;
+    //     Price = price;
+    //     MinCapacity = minCapacity;
+    //     MaxCapacity = maxCapacity;
+    //     IsActive = isActive;
+    // }
+    //
+    // public PaddleBoard(string name, double price, int minCapacity, int maxCapacity, bool isActive,
+    //     PaddleBoardType paddleBoardType, ICollection<PaddleBoardReservation> paddleBoardReservations)
+    // {
+    //     Name = name;
+    //     Price = price;
+    //     MinCapacity = minCapacity;
+    //     MaxCapacity = maxCapacity;
+    //     IsActive = isActive;
+    //     PaddleBoardType = paddleBoardType;
+    //     PaddleBoardTypeID = paddleBoardType.Id;
+    //     PaddleBoardReservations = paddleBoardReservations;
+    // }
 }

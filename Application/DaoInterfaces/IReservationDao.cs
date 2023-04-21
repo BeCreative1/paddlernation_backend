@@ -7,5 +7,5 @@ public interface IReservationDao
 {
 	Task<IEnumerable<ReservationDto>> GetAsync();
 	Task<ReservationDto?> GetByIdAsync(int id);
-	Task<ReservationDto> CreateReservationAsync(ReservationCreationDto reservationDto);
+	Task<Reservation> CreateReservationAsync(Reservation reservation);
 }
