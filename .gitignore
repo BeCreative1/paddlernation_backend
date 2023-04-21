@@ -3,3 +3,9 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+/.idea/
+paddler_nation.sln.DotSettings.user
+EfcDataAccess/PaddlerNationDatabase.db-wal
+EfcDataAccess/PaddlerNationDatabase.db-shm
+EfcDataAccess/PaddlerNationDatabase.db
+EfcDataAccess/Migrations
