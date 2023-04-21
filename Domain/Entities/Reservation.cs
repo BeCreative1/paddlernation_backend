@@ -10,7 +10,7 @@ public class Reservation
     public DateTime CreatedAt { get; set; }
     public DateTime DateFrom { get; set; }
     public DateTime DateTo { get; set; }
-    public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; }
+    public ICollection<PaddleBoardReservation> PaddleBoardReservations { get; set; }
     // public Order OrderedIn { get; }
 
     // public Reservation(DateTime dateFrom, DateTime dateTo)

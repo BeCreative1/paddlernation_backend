@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="PaddlerNationDatabase" uuid="1606d5f6-5375-47c6-90ec-532fd6ed8c61">
-      <driver-ref>sqlite.xerial</driver-ref>
+      <driver-ref>a056c322-ca7f-4c0f-af18-c1530db3df5d</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\natal\RiderProjects\paddlernation_backend\EfcDataAccess\PaddlerNationDatabase.db</jdbc-url>
@@ -10,6 +10,18 @@
       <libraries>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.40.1/org/xerial/sqlite-jdbc/3.40.1.0/sqlite-jdbc-3.40.1.0.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="PaddlerNationDatabase [2]" uuid="bf875b21-60fa-4506-ab23-13de869bd746">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/EfcDataAccess/PaddlerNationDatabase.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.39.2/sqlite-jdbc-3.39.2.jar</url>
         </library>
       </libraries>
     </data-source>

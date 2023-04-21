@@ -3,19 +3,21 @@ using Application.Logic;
 using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs.Reservation;
+using EfcDataAccess.DAOs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using xUnit.Utils;
 
 namespace xUnit.ApplicationTests;
 [TestClass]
-public class ReservationTests
+public class ReservationTests : DbTestBaseClass
 {
-	private Mock<IReservationLogic> _logic;
+	private IReservationLogic _logic;
 
 	[TestInitialize]
 	public void Setup()
 	{
-		_logic = new Mock<IReservationLogic>();
+		_logic = new ReservationLogic(new ReservationDao(PaddleBoardDb));
 	}
 
 	[TestMethod]
@@ -44,7 +46,7 @@ public class ReservationTests
 	public async Task GetAsync_Empty()
 	{
 		// Act
-		var result = await _logic.Object.GetAsync();
+		var result = await _logic.GetAsync();
 
 		// Assert
 		Assert.AreEqual(0, result.Count());
@@ -54,11 +56,91 @@ public class ReservationTests
 	public async Task GetByIdAsync_Empty()
 	{
 		// Act
-		var result = await _logic.Object.GetByIdAsync(1);
-
+		var exception = await Assert.ThrowsExceptionAsync<Exception>(() => _logic.GetByIdAsync(1));
 
 		// Assert
-		Assert.AreEqual(null, result);
+		Assert.AreEqual("Reservation with id 1 was not found!", exception.Message);
 	}
+
+	[TestMethod]
+	public async Task GetByIdAsync_ItemExists()
+	{
+		// Act
+		var paddleBoards = new List<int>();
+		paddleBoards.Add(1);
+		var reservationDto = new ReservationCreationDto()
+		{
+			DateFrom = DateTime.Today,
+			DateTo = DateTime.Today.AddDays(1),
+			PaddleBoardIds = paddleBoards
+		};
+		await _logic.CreateReservationAsync(reservationDto);
+		var response = await _logic.GetByIdAsync(1);
+
+		// Assert
+		Assert.AreEqual(1, response.Id);
+		Assert.AreEqual(DateTime.Today,response.DateFrom);
+		Assert.AreEqual(DateTime.Today.AddDays(1),response.DateTo);
+	}
+
+
+	[TestMethod]
+	public async Task CreateReservationAsync_AddsReservationWithPaddleBoardReservations()
+	{
+		// Arrange
+		var paddleBoards = new List<int> { 1, 2 };
+		var reservationDto = new ReservationCreationDto
+		{
+			DateFrom = DateTime.Today,
+			DateTo = DateTime.Today.AddDays(1),
+			PaddleBoardIds = paddleBoards
+		};
+
+		// Act
+		var createdReservation = await _logic.CreateReservationAsync(reservationDto);
+
+		// Assert
+		Assert.AreEqual(2, createdReservation.PaddleBoardReservations.Count);
+		Assert.AreEqual(1, createdReservation.PaddleBoardReservations.First().PadleBoardID);
+	}
+
+	[TestMethod]
+	public async Task CreateReservationAsync_ThrowsExceptionWhenPaddleBoardIdsAreNull()
+	{
+		// Arrange
+		var reservationDto = new ReservationCreationDto
+		{
+			DateFrom = DateTime.Today,
+			DateTo = DateTime.Today.AddDays(1),
+			PaddleBoardIds = null
+		};
+
+		// Act & Assert
+		await Assert.ThrowsExceptionAsync<Exception>(() => _logic.CreateReservationAsync(reservationDto));
+	}
+
+	[TestMethod]
+	public async Task CreateAsync_EmptyPaddleBoards()
+	{
+		// Arrange
+
+		var reservationDto = new ReservationCreationDto()
+		{
+			DateFrom = DateTime.Now,
+			DateTo = DateTime.Today.AddDays(1)
+		};
+		// await PaddleBoardDb.Reservations.AddAsync(reservationDto);
+		// await PaddleBoardDb.SaveChangesAsync();
+
+		// Act
+		var created = await Assert.ThrowsExceptionAsync<Exception>(async () => await _logic.CreateReservationAsync(reservationDto));
+
+		// Assert
+		Assert.AreEqual("PaddleBoardReservations cannot be null or empty", created.Message);
+
+
+	}
+
+
 
 }

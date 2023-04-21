@@ -13,7 +13,6 @@ public class ReservationLogic : IReservationLogic
 	public ReservationLogic(IReservationDao reservationDao)
 	{
 		_reservationDao = reservationDao;
-		// _paddleBoardLogic = paddleBoardLogic;
 	}
 
 	public async Task<IEnumerable<ReservationDto>> GetAsync()
@@ -43,12 +42,17 @@ public class ReservationLogic : IReservationLogic
 		{
 			CreatedAt = DateTime.UtcNow,
 			DateFrom = reservationDto.DateFrom,
-			DateTo = reservationDto.DateTo
+			DateTo = reservationDto.DateTo,
+			PaddleBoardReservations = new List<PaddleBoardReservation>()
 		};
 
 		foreach (var id in reservationDto.PaddleBoardIds)
 		{
-			// reservation.PaddleBoardReservations.Add(_paddleBoardLogic.getAsync(id));
+			reservation.PaddleBoardReservations.Add(new PaddleBoardReservation()
+			{
+				ReservationID = reservation.Id,
+				PadleBoardID = id
+			});
 		}
 
 		var created = await _reservationDao.CreateReservationAsync(reservation);
@@ -85,4 +89,5 @@ public class ReservationLogic : IReservationLogic
 		}
 
 	}
+
 }
