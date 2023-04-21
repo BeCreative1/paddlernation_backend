@@ -11,7 +11,7 @@ public class Customer
     public string Email { get; set; }
     public string Phone { get; set; }
     [JsonIgnore]
-    public ICollection<Order> Orders { get; set; }
+    public ICollection<Order>? Orders { get; set; }
 
 
 }

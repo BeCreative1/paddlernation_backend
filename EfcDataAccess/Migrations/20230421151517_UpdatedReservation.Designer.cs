@@ -3,6 +3,7 @@ using System;
 using EfcDataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EfcDataAccess.Migrations
 {
     [DbContext(typeof(PaddlerNationContext))]
-    partial class PaddlerNationContextModelSnapshot : ModelSnapshot
+    [Migration("20230421151517_UpdatedReservation")]
+    partial class UpdatedReservation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
@@ -199,9 +202,6 @@ namespace EfcDataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<double>("TotalPrice")
                         .HasColumnType("REAL");
 
@@ -210,8 +210,6 @@ namespace EfcDataAccess.Migrations
                     b.HasIndex("DeliveryID");
 
                     b.HasIndex("OrderedByID");
-
-                    b.HasIndex("ReservationId");
 
                     b.ToTable("Orders");
                 });
@@ -237,15 +235,15 @@ namespace EfcDataAccess.Migrations
 
             modelBuilder.Entity("Domain.PaddleBoardReservation", b =>
                 {
-                    b.Property<int>("PadleBoardID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("ReservationID")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("PadleBoardID", "ReservationID");
+                    b.Property<int>("PadleBoardID")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("ReservationID");
+                    b.HasKey("ReservationID", "PadleBoardID");
+
+                    b.HasIndex("PadleBoardID");
 
                     b.ToTable("PaddleBoardReservations");
                 });
@@ -289,7 +287,12 @@ namespace EfcDataAccess.Migrations
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("OrderedInId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderedInId");
 
                     b.ToTable("Reservations");
                 });
@@ -345,17 +348,9 @@ namespace EfcDataAccess.Migrations
                         .WithMany("Orders")
                         .HasForeignKey("OrderedByID");
 
-                    b.HasOne("Domain.Reservation", "Reservation")
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Delivery");
 
                     b.Navigation("OrderedBy");
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Domain.PaddleBoard", b =>
@@ -388,6 +383,17 @@ namespace EfcDataAccess.Migrations
                     b.Navigation("Reservation");
                 });
 
+            modelBuilder.Entity("Domain.Reservation", b =>
+                {
+                    b.HasOne("Domain.Order", "OrderedIn")
+                        .WithMany("Reservations")
+                        .HasForeignKey("OrderedInId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderedIn");
+                });
+
             modelBuilder.Entity("Domain.Address", b =>
                 {
                     b.Navigation("Deliveries");
@@ -413,6 +419,8 @@ namespace EfcDataAccess.Migrations
             modelBuilder.Entity("Domain.Order", b =>
                 {
                     b.Navigation("ExtrasOrders");
+
+                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("Domain.PaddleBoard", b =>

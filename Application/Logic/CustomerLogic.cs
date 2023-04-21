@@ -1,6 +1,7 @@
 ﻿using Application.DaoInterfaces;
 using Application.LogicInterfaces;
 using Domain;
+using Domain.DTOs;
 
 namespace Application.Logic;
 
@@ -13,6 +14,23 @@ public class CustomerLogic : ICustomerLogic
         this.customerDao = customerDao;
     }
 
+    public async Task<int> CreateAsync(CustomerCreationDto dto)
+    {
+        Customer customer = new Customer()
+        {
+            FullName = dto.FullName,
+            Email = dto.Email,
+            Phone = dto.Phone,
+        };
+
+        var customerId = await customerDao.CustomerExistsAsync(customer);
+
+        if (customerId <= 0)
+            customerId = await customerDao.CreateAsync(customer);
+
+        return customerId;
+    }
+
     public async Task<Customer?> GetByIdAsync(int id)
     {
         Customer? customer = await customerDao.GetByIdAsync(id);
@@ -23,5 +41,4 @@ public class CustomerLogic : ICustomerLogic
 
         return customer;
     }
-    
 }
