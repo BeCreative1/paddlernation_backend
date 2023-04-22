@@ -18,6 +18,7 @@ public class OrderLogicTest : DbTestBaseClass
     private  IAddressDao _addressDao;
     private  IOrderDao _orderDao;
     private  OrderLogic _orderLogic;
+    private IDeliveryDao _deliveryDao;
 
     [TestInitialize]
     public void TestInitialize()
@@ -25,22 +26,19 @@ public class OrderLogicTest : DbTestBaseClass
         _customerDao = new CustomerEfcDao(PaddleBoardDb);
         _addressDao = new AddressEfcDao(PaddleBoardDb);
         _orderDao = new OrderEfcDao(PaddleBoardDb);
-        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao);
+        _deliveryDao = new DeliveryEfcDao(PaddleBoardDb);
+        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao, _deliveryDao);
     }
 
     [TestMethod]
     public async Task OrderCreateAsyncTest()
     {
         // Arrange
-        Customer? customer = new Customer{ FullName = "John", Email = "john@example.com", Phone = "1234567890" };
+        var customer = new Customer{ FullName = "John", Email = "john@example.com", Phone = "1234567890" };
         await PaddleBoardDb.Customers.AddAsync(customer);
         await PaddleBoardDb.SaveChangesAsync();
     
-        var address = new Delivery();
-        await PaddleBoardDb.Deliveries.AddAsync(address);
-        await PaddleBoardDb.SaveChangesAsync();
-    
-        var order = new OrderCreationDto(120, 0, DateTime.Now,  0, 1, 1);
+        var order = new OrderCreationDto(120, PaymentMethod.CreditCard, customer.Id,  DeliveryType.HomeDelivery, 1, 1, "ciy", 8000, "Street");
         
         // Act
         var createdOrder = await _orderLogic.CreateAsync(order);
@@ -48,7 +46,6 @@ public class OrderLogicTest : DbTestBaseClass
         // Assert
         Assert.IsNotNull(createdOrder);
         Assert.AreEqual(order.OwnerId, createdOrder.OrderedBy.Id);
-        Assert.AreEqual(order.AddressId, createdOrder.Delivery.Id);
     }
     
 }

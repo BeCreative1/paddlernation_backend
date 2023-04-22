@@ -2,20 +2,26 @@
 
 public class OrderCreationDto
 {
-    public int TotalPrice { get; }
+    public double TotalPrice { get; }
     public PaymentMethod PaymentMethod { get;}
-    public DateTime CreatedAt { get;}
-    public PaymentStage PaymentStage { get;}
     public int OwnerId { get; }
-    public int AddressId { get; }
-
-    public OrderCreationDto(int totalPrice, PaymentMethod paymentMethod, DateTime createdAt, PaymentStage paymentStage, int ownerId, int addressId)
+    public DeliveryType DeliveryType { get; }
+    public double TotalPriceDelivery { get; }
+    public double TotalKilometers { get; }
+    public string? City { get; }
+    public int? Zip { get; }
+    public string? Street { get; }
+    
+    public OrderCreationDto(double totalPrice, PaymentMethod paymentMethod, int ownerId, DeliveryType deliveryType, double totalPriceDelivery, double totalKilometers, string? city, int? zip, string? street)
     {
         TotalPrice = totalPrice;
         PaymentMethod = paymentMethod;
-        PaymentStage = paymentStage;
         OwnerId = ownerId;
-        AddressId = addressId;
-        CreatedAt = DateTime.Now;
+        DeliveryType = deliveryType;
+        TotalPriceDelivery = totalPriceDelivery;
+        TotalKilometers = totalKilometers;
+        City = city;
+        Zip = zip;
+        Street = street;
     }
 }

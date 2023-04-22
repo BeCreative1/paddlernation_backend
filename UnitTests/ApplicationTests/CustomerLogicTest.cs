@@ -58,7 +58,7 @@ public class CustomerLogicTest : DbTestBaseClass
         var customerToExist = new Customer { FullName = "John", Email = "john@example.com", Phone = "1234567890" };
         //Act
         var customerId = await _customerLogic.CreateAsync(customerToCreate);
-        var existingCustomerId = await _customerDao.CustomerExistsAsync(customerToExist);
+        var existingCustomerId = _customerDao.CustomerExists(customerToExist);
         //Assert
         Assert.IsNotNull(customerId);
         Assert.IsNotNull(existingCustomerId);

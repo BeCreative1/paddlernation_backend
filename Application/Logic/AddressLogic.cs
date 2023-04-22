@@ -13,9 +13,9 @@ public class AddressLogic : IAddressLogic
         this.addressDao = addressDao;
     }
 
-    public async Task<Delivery?> GetByIdAsync(int id)
+    public async Task<Address?> GetByIdAsync(int id)
     {
-        Delivery? address = await addressDao.GetByIdAsync(id);
+        var address = await addressDao.GetByIdAsync(id);
         if (address == null)
         {
             throw new Exception($"Address with id {id} was not found");

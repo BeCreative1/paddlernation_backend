@@ -8,23 +8,23 @@ namespace EfcDataAccess.DAOs;
 public class OrderEfcDao : IOrderDao
 {
 
-    private readonly PaddlerNationContext context;
+    private readonly PaddlerNationContext _context;
 
     public OrderEfcDao(PaddlerNationContext context)
     {
-        this.context = context;
+        _context = context;
     }
 
     public async Task<Order> CreateAsync(Order order)
     {
-        EntityEntry<Order> newOrder = await context.Orders.AddAsync(order);
-        await context.SaveChangesAsync();
+        EntityEntry<Order> newOrder = await _context.Orders.AddAsync(order);
+        await _context.SaveChangesAsync();
         return newOrder.Entity;
     }
 
     public async Task<Order?> GetByIdAsync(int id)
     {
-        Order? order = await context.Orders.AsNoTracking().Include(order => order.OrderedBy)
+        Order? order = await _context.Orders.AsNoTracking().Include(order => order.OrderedBy)
             .Include(order => order.Delivery)
             .SingleOrDefaultAsync(order => order.Id == id);
         return order;
@@ -37,7 +37,7 @@ public class OrderEfcDao : IOrderDao
             throw new Exception($"Order with id {id} not found");
         }
 
-        context.Orders.Remove(order);
-        await context.SaveChangesAsync();
+        _context.Orders.Remove(order);
+        await _context.SaveChangesAsync();
     }
 }

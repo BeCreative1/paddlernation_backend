@@ -7,15 +7,17 @@ namespace Application.Logic;
 
 public class OrderLogic : IOrderLogic
 {
-    private readonly IOrderDao orderDao;
-    private readonly ICustomerDao customerDao;
-    private readonly IAddressDao addressDao;
+    private readonly IOrderDao _orderDao;
+    private readonly ICustomerDao _customerDao;
+    private readonly IAddressDao _addressDao;
+    private readonly IDeliveryDao _deliveryDao;
 
-    public OrderLogic(IOrderDao orderDao, ICustomerDao customerDao, IAddressDao addressDao)
+    public OrderLogic(IOrderDao orderDao, ICustomerDao customerDao, IAddressDao addressDao, IDeliveryDao deliveryDao)
     {
-        this.orderDao = orderDao;
-        this.customerDao = customerDao;
-        this.addressDao = addressDao;
+        _orderDao = orderDao;
+        _customerDao = customerDao;
+        _addressDao = addressDao;
+        _deliveryDao = deliveryDao;
     }
 
     public async Task<Order> CreateAsync(OrderCreationDto dto)
@@ -23,50 +25,67 @@ public class OrderLogic : IOrderLogic
         try
         {
             //Reservation reservation = new Reservation(DateTime.Today,)
-            Customer? customer = await customerDao.GetByIdAsync(dto.OwnerId);
+            var customer = await _customerDao.GetByIdAsync(dto.OwnerId);
             if (customer == null)
             {
                 throw new Exception($"Customer with id {dto.OwnerId} was not found");
             }
 
-            Delivery? deliveryAddress = await addressDao.GetByIdAsync(dto.AddressId);
-            if (deliveryAddress == null)
+            Address? address = null;
+            if (dto.City is not null && dto.Street is not null && dto.Zip is not null)
             {
-                throw new Exception($"Address with id {dto.AddressId} was not found");
+                var addressToCreate = new Address(dto.City, dto.Zip, dto.Street);
+                address = _addressDao.AddressExists(addressToCreate) ?? await _addressDao.CreateAsync(addressToCreate);
             }
+    
             
+            var deliveryToCreate = new Delivery
+            {
+                DeliveryType = dto.DeliveryType,
+                TotalPrice = dto.TotalPriceDelivery,
+                TotalKilometers = dto.TotalKilometers,
+                AtID = address?.Id,
+                At = address
+            };
+            var createdDelivery = await _deliveryDao.CreateAsync(deliveryToCreate);
             
             ValidateOrder(dto);
-            Order orderToCreate = new Order
+            var orderToCreate = new Order
             {
+                TotalPrice = dto.TotalPrice,
+                CreatedAt = DateTime.Now,
+                //Reservation = {  }
+                //ExtrasOrders = {  }
                 OrderedBy = customer,
-                Delivery = deliveryAddress,
-                
+                Delivery = createdDelivery,
+                PaymentMethod = dto.PaymentMethod,
+                PaymentStage = PaymentStage.Unpaid
             };
 
-            Order created = await orderDao.CreateAsync(orderToCreate);
+            var created = await _orderDao.CreateAsync(orderToCreate);
             return created;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e.Message);
             throw;
         }
     }
 
     public async Task DeleteAsync(int id)
     {
-        Order? order = await orderDao.GetByIdAsync(id);
+        var order = await _orderDao.GetByIdAsync(id);
         if (order == null)
         {
             throw new Exception($"Order with id {id} was not found");
         }
 
-        await orderDao.DeleteAsync(id);
+        await _orderDao.DeleteAsync(id);
 
     }
 
     private void ValidateOrder(OrderCreationDto dto)
     {
+        //needs to be implemented
     }
 }
