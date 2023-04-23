@@ -10,14 +10,14 @@ public class OrderLogic : IOrderLogic
     private readonly IOrderDao _orderDao;
     private readonly ICustomerDao _customerDao;
     private readonly IAddressDao _addressDao;
-    private readonly IDeliveryDao _deliveryDao;
+    private readonly IDeliveryLogic _deliveryLogic;
 
-    public OrderLogic(IOrderDao orderDao, ICustomerDao customerDao, IAddressDao addressDao, IDeliveryDao deliveryDao)
+    public OrderLogic(IOrderDao orderDao, ICustomerDao customerDao, IAddressDao addressDao, IDeliveryLogic deliveryLogic)
     {
         _orderDao = orderDao;
         _customerDao = customerDao;
         _addressDao = addressDao;
-        _deliveryDao = deliveryDao;
+        _deliveryLogic = deliveryLogic;
     }
 
     public async Task<Order> CreateAsync(OrderCreationDto dto)
@@ -39,15 +39,13 @@ public class OrderLogic : IOrderLogic
             }
     
             
-            var deliveryToCreate = new Delivery
+            var deliveryToCreate = new DeliveryCreationDto()
             {
                 DeliveryType = dto.DeliveryType,
-                TotalPrice = dto.TotalPriceDelivery,
-                TotalKilometers = dto.TotalKilometers,
-                AtID = address?.Id,
-                At = address
+                AddressId = address?.Id,
+                Address = address
             };
-            var createdDelivery = await _deliveryDao.CreateAsync(deliveryToCreate);
+            var createdDelivery = await _deliveryLogic.CreateAsync(deliveryToCreate);
             
             ValidateOrder(dto);
             var orderToCreate = new Order
