@@ -28,9 +28,6 @@ public class AddressEfcDao : IAddressDao
     {
         var existingAddress = _context.Addresses.Local.SingleOrDefault(a => a.City.Equals(address.City) && a.Street.Equals(address.Street) && a.Zip == address.Zip);
 
-        if (existingAddress is not null)
-            return existingAddress;
-
-        return null;
+        return existingAddress ?? null;
     }
 }
