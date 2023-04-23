@@ -12,9 +12,9 @@ public class AddressEfcDao : IAddressDao
         this.context = context;
     }
 
-    public async Task<Delivery> GetByIdAsync(int id)
+    public async Task<Address> GetByIdAsync(int id)
     {
-        Delivery? address = await context.Deliveries.FindAsync(id);
+        Address? address = await context.Addresses.FindAsync(id);
         return address;
     }
 }
