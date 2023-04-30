@@ -1,8 +1,10 @@
 using Application.DaoInterfaces;
 using Application.LogicInterfaces;
 using Application.Utils;
+using BingMapsRESTToolkit;
 using Domain;
 using Domain.DTOs;
+using Address = Domain.Address;
 
 namespace Application.Logic;
 
@@ -15,24 +17,94 @@ public class DeliveryLogic : IDeliveryLogic
         _deliveryDao = deliveryDao;
     }
     
-    public Task<double> CalculateTotalKilometersAsync()
+    private static async Task<double> CalculateTotalKilometersAsync(DeliveryCreationDto dto)
     {
-        throw new NotImplementedException();
+        if (dto.Address is null)
+            return 0;
+        
+        const string testApiKey = "AllbKbLvx_mjySR-jU9jYjlYkpvDikVWrOZ81996vW0F_gZrIGwpUHP3Xu4qKUpO";
+        
+        var origin = new SimpleWaypoint
+        {
+            Coordinate = GetCoordinates(Constants.GENERAL_ADDRESS, testApiKey).Result
+        };
+        var destination = new SimpleWaypoint
+        {
+            Coordinate = GetCoordinates(dto.Address, testApiKey).Result
+        };
+
+        return await GetTotalDistance(origin, destination, testApiKey);
     }
 
-    public double CalculateTotalPrice(double totalKilometers)
+    private static async Task<double> GetTotalDistance(SimpleWaypoint origin, SimpleWaypoint destination, string apiKey)
+    {
+        var request = new DistanceMatrixRequest()
+        {
+            Origins = new List<SimpleWaypoint>
+            {
+                origin
+            },
+            Destinations = new List<SimpleWaypoint>
+            {
+                destination
+            },
+            TravelMode = TravelModeType.Driving,
+            BingMapsKey = apiKey
+        };
+        
+        //Process the request by using the ServiceManager.
+        var response = await request.Execute();
+
+        if (response is not { ResourceSets.Length: > 0 } ||
+            response.ResourceSets[0].Resources is not { Length: > 0 }) return -1;
+
+        if (response.ResourceSets[0].Resources[0] is DistanceMatrix result) return result.Results[0].TravelDistance;
+
+        return 0;
+    }
+
+    
+    private static async Task<Coordinate?> GetCoordinates(Address a, string apiKey)
+    {
+        //Create a request.
+        var request = new GeocodeRequest()
+        {
+            Address = new SimpleAddress
+            {
+                AddressLine = a.Street,
+                Locality = a.City,
+                PostalCode = a.Zip + ""
+            },
+            MaxResults = 1,
+            BingMapsKey = apiKey
+        };
+        
+        //Process the request by using the ServiceManager.
+        var response = await request.Execute();
+
+        if (response is not { ResourceSets.Length: > 0 } ||
+            response.ResourceSets[0].Resources is not { Length: > 0 }) return null;
+        
+        var result = response.ResourceSets[0].Resources[0] as BingMapsRESTToolkit.Location;
+
+        return result?.Point.GetCoordinate();
+    }
+
+    private static double CalculateTotalPrice(double totalKilometers)
     {
         return totalKilometers * Constants.PRICE_PER_KILOMETER;
     }
 
     public Task<Delivery> CreateAsync(DeliveryCreationDto dto)
     {
-        var totalKilometers = CalculateTotalKilometersAsync();
-        var totalPrice = CalculateTotalPrice(totalKilometers.Result);
+
+
+        var totalKilometers = CalculateTotalKilometersAsync(dto).Result;
+        var totalPrice = CalculateTotalPrice(totalKilometers);
         var deliveryToCreate = new Delivery
         {
             DeliveryType = dto.DeliveryType,
-            TotalKilometers = totalKilometers.Result,
+            TotalKilometers = totalKilometers,
             TotalPrice = totalPrice,
             AtID = dto.AddressId,
             At = dto.Address

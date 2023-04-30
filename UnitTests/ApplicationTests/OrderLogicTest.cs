@@ -1,5 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Application.Logic;
+using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs;
 using EfcDataAccess.DAOs;
@@ -19,6 +20,7 @@ public class OrderLogicTest : DbTestBaseClass
     private  IOrderDao _orderDao;
     private  OrderLogic _orderLogic;
     private IDeliveryDao _deliveryDao;
+    private IDeliveryLogic _deliveryLogic;
 
     [TestInitialize]
     public void TestInitialize()
@@ -27,7 +29,7 @@ public class OrderLogicTest : DbTestBaseClass
         _addressDao = new AddressEfcDao(PaddleBoardDb);
         _orderDao = new OrderEfcDao(PaddleBoardDb);
         _deliveryDao = new DeliveryEfcDao(PaddleBoardDb);
-        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao, _deliveryDao);
+        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao, _deliveryLogic);
     }
 
     [TestMethod]
