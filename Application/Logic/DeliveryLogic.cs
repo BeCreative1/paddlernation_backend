@@ -97,18 +97,30 @@ public class DeliveryLogic : IDeliveryLogic
 
     public Task<Delivery> CreateAsync(DeliveryCreationDto dto)
     {
-
-
-        var totalKilometers = CalculateTotalKilometersAsync(dto).Result;
-        var totalPrice = CalculateTotalPrice(totalKilometers);
-        var deliveryToCreate = new Delivery
+        Delivery deliveryToCreate;
+        if (dto.DeliveryType == DeliveryType.PickUpYourself)
         {
-            DeliveryType = dto.DeliveryType,
-            TotalKilometers = totalKilometers,
-            TotalPrice = totalPrice,
-            AtID = dto.AddressId,
-            At = dto.Address
-        };
+            deliveryToCreate = new Delivery
+            {
+                DeliveryType = dto.DeliveryType,
+                TotalKilometers = 0,
+                TotalPrice = 0,
+            };
+        }
+        else
+        {
+            var totalKilometers = CalculateTotalKilometersAsync(dto).Result;
+                    var totalPrice = CalculateTotalPrice(totalKilometers);
+                    deliveryToCreate = new Delivery
+                    {
+                        DeliveryType = dto.DeliveryType,
+                        TotalKilometers = totalKilometers,
+                        TotalPrice = totalPrice,
+                        AtID = dto.AddressId,
+                        At = dto.Address
+                    };
+        }
+        
 
         var created = _deliveryDao.CreateAsync(deliveryToCreate);
 

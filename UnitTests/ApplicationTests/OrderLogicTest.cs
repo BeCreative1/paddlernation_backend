@@ -29,6 +29,7 @@ public class OrderLogicTest : DbTestBaseClass
         _addressDao = new AddressEfcDao(PaddleBoardDb);
         _orderDao = new OrderEfcDao(PaddleBoardDb);
         _deliveryDao = new DeliveryEfcDao(PaddleBoardDb);
+        _deliveryLogic = new DeliveryLogic(_deliveryDao);
         _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao, _deliveryLogic);
     }
 
@@ -40,7 +41,7 @@ public class OrderLogicTest : DbTestBaseClass
         await PaddleBoardDb.Customers.AddAsync(customer);
         await PaddleBoardDb.SaveChangesAsync();
     
-        var order = new OrderCreationDto(120, PaymentMethod.CreditCard, customer.Id,  DeliveryType.HomeDelivery, 1, 1, "ciy", 8000, "Street");
+        var order = new OrderCreationDto(120, PaymentMethod.CreditCard, customer.Id,  DeliveryType.HomeDelivery, "Horsens", 8700, "Sundvej");
         
         // Act
         var createdOrder = await _orderLogic.CreateAsync(order);

@@ -28,7 +28,7 @@ public class OrdersControllerTests
     public async Task CreateAsyncTest()
     {
         // Arrange
-        var dto = new OrderCreationDto(120, PaymentMethod.CreditCard, 1,  DeliveryType.HomeDelivery, 1, 1, "ciy", 8000, "Street");
+        var dto = new OrderCreationDto(120, PaymentMethod.CreditCard, 1,  DeliveryType.HomeDelivery, "Horsnes", 8700, "Sundvej");
         var order = new Order{         
             Id = 1,
             TotalPrice = dto.TotalPrice,
@@ -57,7 +57,7 @@ public class OrdersControllerTests
     public async Task CreateAsync_WithInvalidOrderCreationDto_ThrowsException()
     {
         // Arrange
-        var dto = new OrderCreationDto(120, PaymentMethod.CreditCard, 1,  DeliveryType.HomeDelivery, 1, 1, "ciy", 8000, "Street");
+        var dto = new OrderCreationDto(120, PaymentMethod.CreditCard, 1,  DeliveryType.HomeDelivery, "Horsens", 8700, "Sundvej");
         orderLogicMock
             .Setup(x => x.CreateAsync(dto))
             .ThrowsAsync(new ArgumentException());

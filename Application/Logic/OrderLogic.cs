@@ -37,7 +37,6 @@ public class OrderLogic : IOrderLogic
                 var addressToCreate = new Address(dto.City, dto.Zip, dto.Street);
                 address = _addressDao.AddressExists(addressToCreate) ?? await _addressDao.CreateAsync(addressToCreate);
             }
-    
             
             var deliveryToCreate = new DeliveryCreationDto()
             {
