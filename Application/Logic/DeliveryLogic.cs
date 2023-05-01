@@ -71,7 +71,6 @@ public class DeliveryLogic : IDeliveryLogic
         {
             Address = new SimpleAddress
             {
-                AddressLine = a.Street,
                 Locality = a.City,
                 PostalCode = a.Zip + ""
             },
