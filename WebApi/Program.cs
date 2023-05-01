@@ -18,7 +18,6 @@ builder.Services.AddScoped<IReservationLogic, ReservationLogic>();
 builder.Services.AddScoped<IOrderDao, OrderEfcDao>();
 builder.Services.AddScoped<IOrderLogic, OrderLogic>();
 builder.Services.AddScoped<IAddressDao, AddressEfcDao>();
-builder.Services.AddScoped<IAddressLogic, AddressLogic>();
 builder.Services.AddScoped<IDeliveryLogic, DeliveryLogic>();
 builder.Services.AddScoped<IDeliveryDao, DeliveryEfcDao>();
 builder.Services.AddScoped<ICustomerDao, CustomerEfcDao>();
