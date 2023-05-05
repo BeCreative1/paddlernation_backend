@@ -15,7 +15,7 @@ public class DeliveryLogic : IDeliveryLogic
 {
     private readonly IDeliveryDao _deliveryDao;
     private readonly IConfigurationRoot _configuration;
-    private readonly string _apiKey = "";
+    private readonly string _apiKey;
 
     public DeliveryLogic(IDeliveryDao deliveryDao)
     {
@@ -23,7 +23,13 @@ public class DeliveryLogic : IDeliveryLogic
         _configuration = new ConfigurationBuilder()
             .AddUserSecrets<DeliveryLogic>()
             .Build();
-        _apiKey = _configuration["BingMaps:ApiKey"]!;
+        _apiKey = _configuration["BING_MAP_API"]!;
+        
+        if (_apiKey.Equals(string.Empty))
+        {
+            _apiKey = Environment.GetEnvironmentVariable("BING_MAP_API")!;
+        }
+        
     }
     
     private async Task<double> CalculateTotalKilometersAsync(DeliveryCreationDto dto)
