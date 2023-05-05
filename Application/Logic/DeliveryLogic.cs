@@ -15,7 +15,7 @@ public class DeliveryLogic : IDeliveryLogic
 {
     private readonly IDeliveryDao _deliveryDao;
     private readonly IConfigurationRoot _configuration;
-    private readonly string _apiKey;
+    private readonly string _apiKey = "";
 
     public DeliveryLogic(IDeliveryDao deliveryDao)
     {
