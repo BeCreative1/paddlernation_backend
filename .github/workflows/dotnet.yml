@@ -27,4 +27,6 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
+      env: 
+        BING_MAP_API: ${{ secrets.BING_MAP_API }}
       run: dotnet test --no-build --verbosity normal
