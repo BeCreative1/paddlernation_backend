@@ -1,8 +1,8 @@
-using Domain;
+using Domain.DTOs.PaddleBoard;
 
 namespace Application.LogicInterfaces;
 
 public interface IPaddleBoardLogic
 {
-    public Task<IEnumerable<PaddleBoard>> GetAllPaddleBoardsAsync();
+    public Task<IEnumerable<PaddleBoardDto>> GetAllPaddleBoardsAsync();
 }

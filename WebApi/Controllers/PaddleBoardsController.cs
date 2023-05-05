@@ -1,5 +1,7 @@
 ﻿using Application.LogicInterfaces;
 using Domain;
+using Domain.DTOs;
+using Domain.DTOs.PaddleBoard;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -20,7 +22,7 @@ public class PaddleBoardsController : ControllerBase
     {
         try
         {
-            IEnumerable<PaddleBoard> paddleBoards = await PaddleBoardLogic.GetAllPaddleBoardsAsync();
+            IEnumerable<PaddleBoardDto> paddleBoards = await PaddleBoardLogic.GetAllPaddleBoardsAsync();
             return Ok(paddleBoards);
         }
         catch (Exception e)

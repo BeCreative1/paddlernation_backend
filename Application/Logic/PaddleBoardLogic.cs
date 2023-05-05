@@ -1,11 +1,11 @@
 using Application.LogicInterfaces;
-using Domain;
+using Domain.DTOs.PaddleBoard;
 
 namespace Application.Logic;
 
 public class PaddleBoardLogic : IPaddleBoardLogic
 {
-    public Task<IEnumerable<PaddleBoard>> GetAllPaddleBoardsAsync()
+    public Task<IEnumerable<PaddleBoardDto>> GetAllPaddleBoardsAsync()
     {
         throw new NotImplementedException();
     }
