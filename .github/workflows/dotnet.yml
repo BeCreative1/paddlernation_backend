@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET with key=${{ secrets.BING_MAP_API }}
+    - name: Setup .NET with key=${{ secrets.BING_MAP_API }} and username=${{ github.actor }}
       uses: actions/setup-dotnet@v3
       env:
        MY_API_KEY: ${{ secrets.BING_MAP_API }}
