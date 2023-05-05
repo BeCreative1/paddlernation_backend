@@ -24,6 +24,8 @@ builder.Services.AddScoped<IDeliveryLogic, DeliveryLogic>();
 builder.Services.AddScoped<IDeliveryDao, DeliveryEfcDao>();
 builder.Services.AddScoped<ICustomerDao, CustomerEfcDao>();
 builder.Services.AddScoped<ICustomerLogic, CustomerLogic>();
+builder.Services.AddScoped<IExtraLogic, ExtrasLogic>();
+builder.Services.AddScoped<IExtrasDao, ExtrasEfcDao>();
 
 
 builder.Services.AddDbContext<PaddlerNationContext>();
