@@ -4,6 +4,9 @@ using Application.Utils;
 using BingMapsRESTToolkit;
 using Domain;
 using Domain.DTOs;
+using Microsoft.Configuration.ConfigurationBuilders;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Address = Domain.Address;
 
 namespace Application.Logic;
@@ -11,29 +14,33 @@ namespace Application.Logic;
 public class DeliveryLogic : IDeliveryLogic
 {
     private readonly IDeliveryDao _deliveryDao;
+    private readonly IConfigurationRoot _configuration;
+    private readonly string _apiKey = "";
 
     public DeliveryLogic(IDeliveryDao deliveryDao)
     {
         _deliveryDao = deliveryDao;
+        _configuration = new ConfigurationBuilder()
+            .AddUserSecrets<DeliveryLogic>()
+            .Build();
+        _apiKey = _configuration["BingMaps:ApiKey"]!;
     }
     
-    private static async Task<double> CalculateTotalKilometersAsync(DeliveryCreationDto dto)
+    private async Task<double> CalculateTotalKilometersAsync(DeliveryCreationDto dto)
     {
         if (dto.Address is null)
             return 0;
         
-        const string testApiKey = "AllbKbLvx_mjySR-jU9jYjlYkpvDikVWrOZ81996vW0F_gZrIGwpUHP3Xu4qKUpO";
-        
         var origin = new SimpleWaypoint
         {
-            Coordinate = GetCoordinates(Constants.GENERAL_ADDRESS, testApiKey).Result
+            Coordinate = GetCoordinates(Constants.GENERAL_ADDRESS, _apiKey).Result
         };
         var destination = new SimpleWaypoint
         {
-            Coordinate = GetCoordinates(dto.Address, testApiKey).Result
+            Coordinate = GetCoordinates(dto.Address, _apiKey).Result
         };
 
-        return await GetTotalDistance(origin, destination, testApiKey);
+        return await GetTotalDistance(origin, destination, _apiKey);
     }
 
     private static async Task<double> GetTotalDistance(SimpleWaypoint origin, SimpleWaypoint destination, string apiKey)

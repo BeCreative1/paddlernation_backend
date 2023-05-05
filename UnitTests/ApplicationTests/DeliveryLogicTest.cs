@@ -1,11 +1,16 @@
 using Application.DaoInterfaces;
 using Application.Logic;
 using Application.LogicInterfaces;
+using Application.Utils;
+using Castle.Core.Configuration;
 using Domain;
 using Domain.DTOs;
 using EfcDataAccess.DAOs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using xUnit.Utils;
+using IConfiguration = Castle.Core.Configuration.IConfiguration;
 
 namespace xUnit.ApplicationTests;
 

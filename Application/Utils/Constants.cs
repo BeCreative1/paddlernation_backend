@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Domain;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Utils;
 
