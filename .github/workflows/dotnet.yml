@@ -16,6 +16,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up secrets
+      env:
+        BING_MAP_API: ${{ secrets.BING_MAP_API }}
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
