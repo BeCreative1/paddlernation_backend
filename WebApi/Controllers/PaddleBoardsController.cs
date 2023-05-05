@@ -18,11 +18,11 @@ public class PaddleBoardsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllPaddleBoardsAsync([FromQuery] string date)
+    public async Task<IActionResult> GetAllPaddleBoardsAsync([FromQuery] string dates)
     {
         try
         {
-            IEnumerable<PaddleBoardDto> paddleBoards = await PaddleBoardLogic.GetAllPaddleBoardsAsync();
+            IEnumerable<PaddleBoardDto> paddleBoards = await PaddleBoardLogic.GetAllPaddleBoardsAsync(dates);
             return Ok(paddleBoards);
         }
         catch (Exception e)

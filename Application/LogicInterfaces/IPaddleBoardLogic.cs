@@ -4,5 +4,5 @@ namespace Application.LogicInterfaces;
 
 public interface IPaddleBoardLogic
 {
-    public Task<IEnumerable<PaddleBoardDto>> GetAllPaddleBoardsAsync();
+    public Task<IEnumerable<PaddleBoardDto>> GetAllPaddleBoardsAsync(string dates);
 }
