@@ -15,12 +15,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up secrets
-      env:
-       MY_API_KEY: ${{ secrets.BING_MAP_API }}
     - uses: actions/checkout@v3
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
+      env:
+       MY_API_KEY: ${{ secrets.BING_MAP_API }}
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
