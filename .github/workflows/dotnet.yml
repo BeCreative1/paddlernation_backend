@@ -18,13 +18,12 @@ jobs:
     - uses: actions/checkout@v3
     - name: Setup .NET with key=${{ secrets.BING_MAPS_API }} and username=${{ github.actor }}
       uses: actions/setup-dotnet@v3
+      env:
+       BING_MAPS_API: ${{ secrets.BING_MAPS_API }}
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Setup env variables
-      env:
-       BING_MAPS_API: ${{ secrets.BING_MAPS_API }}
     - name: Build
       run: dotnet build --no-restore
     - name: Test
