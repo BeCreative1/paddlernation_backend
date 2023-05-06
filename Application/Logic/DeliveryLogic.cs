@@ -23,11 +23,11 @@ public class DeliveryLogic : IDeliveryLogic
         _configuration = new ConfigurationBuilder()
             .AddUserSecrets<DeliveryLogic>()
             .Build();
-        _apiKey = _configuration["BING_MAP_API"];
+        _apiKey = _configuration["BING_MAPS_API"];
         
         if (string.IsNullOrWhiteSpace(_apiKey))
         {
-            _apiKey = Environment.GetEnvironmentVariable("BING_MAP_API")!;
+            _apiKey = Environment.GetEnvironmentVariable("BING_MAPS_API")!;
         }
         
     }
