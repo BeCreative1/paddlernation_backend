@@ -244,6 +244,33 @@ public class PaddleBoardLogicTest : DbTestBaseClass
         IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
 
         // Assert
-        Assert.AreEqual(5, paddleBoardDtos.Count());
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_TwoReservationInBetweenWithDifferentPaddleBoards()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 6, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 6, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+        
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 7, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 7, 12, 0, 0),
+            PaddleBoardIds = new List<int> {2}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(3, paddleBoardDtos.Count());
     }
 }

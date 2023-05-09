@@ -1,10 +1,7 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9eb03966_002Dafd6_002D426a_002Da809_002D23efdf521c73/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.PaddleBoardLogicTest&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;MSTest::22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1::net6.0::xUnit.ApplicationTests.ReservationTests.CreateReservationAsync_AddsReservationWithPaddleBoardReservations&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Project Location="C:\Users\Darko\Desktop\Web_Development\Back_End\Jobs\BeCreative[David-PaddlebordNation]\paddler_nation\UnitTests" Presentation="&amp;lt;UnitTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
 	

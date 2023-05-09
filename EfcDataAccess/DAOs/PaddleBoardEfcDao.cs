@@ -16,21 +16,22 @@ public class PaddleBoardEfcDao : IPaddleBoardDao
 
     public async Task<IEnumerable<PaddleBoardDto>> GetAllAvailablePeddleBoardsAsync(DateOnly dateFrom, DateOnly dateTo)
     {
-        // All paddle boards reserved in the given dates ranges.
+        // All paddle boards reserved in the given date ranges.
         IEnumerable<PaddleBoard> noneAvailablePaddleBoards = await _context.PaddleBoardReservations
             .Where(pbr =>
                 (
-                    pbr.Reservation.DateFrom <= dateFrom.ToDateTime(TimeOnly.MinValue) &&
-                    pbr.Reservation.DateTo >= dateFrom.ToDateTime(TimeOnly.MaxValue)
+                    dateFrom.ToDateTime(TimeOnly.MinValue) > pbr.Reservation.DateFrom &&
+                    pbr.Reservation.DateTo < dateFrom.ToDateTime(TimeOnly.MaxValue)
                 )
-                &&
+                ||
                 (
-                    pbr.Reservation.DateFrom <= dateTo.ToDateTime(TimeOnly.MinValue) &&
-                    pbr.Reservation.DateTo >= dateTo.ToDateTime(TimeOnly.MaxValue)
+                    dateTo.ToDateTime(TimeOnly.MinValue) > pbr.Reservation.DateFrom &&
+                    pbr.Reservation.DateTo < dateTo.ToDateTime(TimeOnly.MaxValue)
                 )
             )
             .Select(pbr => pbr.PaddleBoard)
             .ToListAsync();
+
 
         // Get all paddle boards and exclude the ones that are reserved.
         IEnumerable<PaddleBoard> paddleBoards = await _context.PaddleBoards
