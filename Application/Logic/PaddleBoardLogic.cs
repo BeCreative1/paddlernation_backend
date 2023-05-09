@@ -17,8 +17,7 @@ public class PaddleBoardLogic : IPaddleBoardLogic
 
     public async Task<IEnumerable<PaddleBoardDto>> GetAllPaddleBoardsAsync(string dates)
     {
-        if (!ValidateDates(dates))
-            throw new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\"");
+        ValidateDates(dates);
 
         if (String.IsNullOrEmpty(dates))
             return await PaddleBoardDao.GetAllPeddleBoardsAsync();
@@ -33,23 +32,25 @@ public class PaddleBoardLogic : IPaddleBoardLogic
         return await PaddleBoardDao.GetAllAvailablePeddleBoardsAsync(dateFrom, dateTo);
     }
 
-    private bool ValidateDates(string dates)
+    private void ValidateDates(string dates)
     {
-        if (String.IsNullOrEmpty(dates))
-            return true;
-
+        if(String.IsNullOrEmpty(dates))
+            return;
+        
         string[] output = dates.Split('-');
-        DateOnly dateOnly;
+        DateOnly dateTo;
+        DateOnly dateFrom;
 
         if (output.Length < 2)
-            return false;
+            throw new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\"");
 
-        if (!DateOnly.TryParseExact(output[0], "dd/MM/yyyy", out dateOnly))
-            return false;
+        if (!DateOnly.TryParseExact(output[0], "dd/MM/yyyy", out dateFrom))
+            throw new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\"");
 
-        if (!DateOnly.TryParseExact(output[1], "dd/MM/yyyy", out dateOnly))
-            return false;
+        if (!DateOnly.TryParseExact(output[1], "dd/MM/yyyy", out dateTo))
+            throw new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\"");
 
-        return true;
+        if (dateFrom > dateTo)
+            throw new Exception("Date from is bigger then Date to");
     }
 }
