@@ -27,8 +27,24 @@ public class PaddleBoardsControllerTest
         // Arrange
         var paddleBoards = new List<PaddleBoardDto>()
         {
-            new PaddleBoardDto {PaddleBoard = new PaddleBoard {Id = 1, IsActive = true, PaddleBoardReservations = { }, PaddleBoardType = new PaddleBoardType("Big", 15, 1, 6), PaddleBoardTypeID = 1}, Amount = 2},
-            new PaddleBoardDto {PaddleBoard = new PaddleBoard {Id = 2, IsActive = true, PaddleBoardReservations = { }, PaddleBoardType = new PaddleBoardType("Small", 5, 1, 2), PaddleBoardTypeID = 2}, Amount = 4},
+            new PaddleBoardDto
+            {
+                Id = 1,
+                MaxCapacity = 6,
+                MinCapacity = 2,
+                NameOfType = "Big",
+                PaddleBoardTypeID = 1,
+                Price = 15
+            },
+            new PaddleBoardDto
+            {
+                Id = 2,
+                MaxCapacity = 4,
+                MinCapacity = 2,
+                NameOfType = "Medium",
+                PaddleBoardTypeID = 2,
+                Price = 10
+            }
         };
 
         _mockPaddleBoardLogic.Setup(m => m.GetAllPaddleBoardsAsync("")).ReturnsAsync(paddleBoards);
@@ -40,12 +56,13 @@ public class PaddleBoardsControllerTest
         Assert.IsNotNull(results);
         Assert.AreEqual(paddleBoards, results.Value);
     }
-    
+
     [TestMethod]
     public async Task GetAllPaddleBoardsExceptionTest()
     {
         // Arrange
-        _mockPaddleBoardLogic.Setup(m => m.GetAllPaddleBoardsAsync("")).ThrowsAsync(new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\""));
+        _mockPaddleBoardLogic.Setup(m => m.GetAllPaddleBoardsAsync("4/5/23-May 5, 2012")).ThrowsAsync(
+            new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\""));
 
         // Act
         var results = await PaddleBoardsController.GetAllPaddleBoardsAsync("4/5/23-May 5, 2012") as ObjectResult;

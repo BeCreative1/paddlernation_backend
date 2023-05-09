@@ -19,17 +19,25 @@ public class PaddleBoardLogic : IPaddleBoardLogic
     {
         if (!ValidateDates(dates))
             throw new Exception("Invalid date format provided, format should follow \"dd/MM/yyyy-dd/MM/yyyy\"");
-        
-        IEnumerable<PaddleBoardDto> paddleBoardDtos = await PaddleBoardDao.GetAllPeddleBoardsAsync();
 
-        return paddleBoardDtos;
+        if (String.IsNullOrEmpty(dates))
+            return await PaddleBoardDao.GetAllPeddleBoardsAsync();
+
+        string[] output = dates.Split('-');
+        DateOnly dateFrom;
+        DateOnly dateTo;
+
+        DateOnly.TryParseExact(output[0], "dd/MM/yyyy", out dateFrom);
+        DateOnly.TryParseExact(output[1], "dd/MM/yyyy", out dateTo);
+
+        return await PaddleBoardDao.GetAllAvailablePeddleBoardsAsync(dateFrom, dateTo);
     }
 
     private bool ValidateDates(string dates)
     {
         if (String.IsNullOrEmpty(dates))
             return true;
-        
+
         string[] output = dates.Split('-');
         DateOnly dateOnly;
 

@@ -2,6 +2,7 @@ using Application.Logic;
 using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs.PaddleBoard;
+using Domain.DTOs.Reservation;
 using EfcDataAccess.DAOs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using xUnit.Utils;
@@ -12,17 +13,19 @@ namespace xUnit.ApplicationTests;
 public class PaddleBoardLogicTest : DbTestBaseClass
 {
     private IPaddleBoardLogic _logic;
+    private IReservationLogic _reservationLogic;
 
     [TestInitialize]
-    public async void SetUp()
+    public void SetUp()
     {
         _logic = new PaddleBoardLogic(new PaddleBoardEfcDao(PaddleBoardDb));
+        _reservationLogic = new ReservationLogic(new ReservationDao(PaddleBoardDb));
 
         // Add initial data in to database
-        await AddInitialData();
+        AddInitialData();
     }
 
-    private async Task AddInitialData()
+    private void AddInitialData()
     {
         PaddleBoardType paddleBoardTypeBig = new PaddleBoardType("Big", 15, 2, 6);
         PaddleBoardType paddleBoardTypeMedium = new PaddleBoardType("Medium", 10, 2, 4);
@@ -46,8 +49,8 @@ public class PaddleBoardLogicTest : DbTestBaseClass
             PaddleBoardTypeID = 1,
             PaddleBoardType = paddleBoardTypeBig
         };
-        
-        
+
+
         PaddleBoard paddleBoardMedium1 = new PaddleBoard
         {
             IsActive = true,
@@ -60,8 +63,8 @@ public class PaddleBoardLogicTest : DbTestBaseClass
             PaddleBoardTypeID = 2,
             PaddleBoardType = paddleBoardTypeMedium
         };
-        
-        
+
+
         PaddleBoard paddleBoardSmall1 = new PaddleBoard
         {
             IsActive = true,
@@ -74,24 +77,24 @@ public class PaddleBoardLogicTest : DbTestBaseClass
             PaddleBoardTypeID = 3,
             PaddleBoardType = paddleBoardTypeSmall
         };
-        
-        await PaddleBoardDb.PaddleBoardTypes.AddAsync(paddleBoardTypeBig);
-        await PaddleBoardDb.PaddleBoardTypes.AddAsync(paddleBoardTypeMedium);
-        await PaddleBoardDb.PaddleBoardTypes.AddAsync(paddleBoardTypeSmall);
-        
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardBig1);
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardBig2);
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardBig3);
-        
 
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardMedium1);
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardMedium2);
-        
-        
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardSmall1);
-        await PaddleBoardDb.PaddleBoards.AddAsync(paddleBoardSmall2);
-        
-        await PaddleBoardDb.SaveChangesAsync();
+        PaddleBoardDb.PaddleBoardTypes.Add(paddleBoardTypeBig);
+        PaddleBoardDb.PaddleBoardTypes.Add(paddleBoardTypeMedium);
+        PaddleBoardDb.PaddleBoardTypes.Add(paddleBoardTypeSmall);
+
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardBig1);
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardBig2);
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardBig3);
+
+
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardMedium1);
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardMedium2);
+
+
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardSmall1);
+        PaddleBoardDb.PaddleBoards.Add(paddleBoardSmall2);
+
+        PaddleBoardDb.SaveChanges();
     }
 
     // --- Exceptions testing ---
@@ -179,12 +182,68 @@ public class PaddleBoardLogicTest : DbTestBaseClass
     // --- Logic testing ---
 
     [TestMethod]
-    public void GetAllPaddleBoardsAsync_GetAllActivePaddleBoards()
+    public async Task GetAllPaddleBoardsAsync_GetAllActivePaddleBoards()
     {
         // Arrange
+        string dates = "";
 
         // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
 
         // Assert
+        Assert.AreEqual(5, paddleBoardDtos.Count());
+    }
+
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_NoReservations()
+    {
+        // Arrange
+        string dates = "05/05/2023-07/05/2023";
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(5, paddleBoardDtos.Count());
+    }
+
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationNotInBetween()
+    {
+        // Arrange
+        string dates = "05/05/2023-07/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 6, 6, 6, 0, 0),
+            DateTo = new DateTime(2023, 6, 6, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(5, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationInBetween()
+    {
+        // Arrange
+        string dates = "05/05/2023-07/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 6, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 6, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(5, paddleBoardDtos.Count());
     }
 }
