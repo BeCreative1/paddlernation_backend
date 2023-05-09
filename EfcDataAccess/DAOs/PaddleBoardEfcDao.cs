@@ -19,15 +19,9 @@ public class PaddleBoardEfcDao : IPaddleBoardDao
         // All paddle boards reserved in the given date ranges.
         IEnumerable<PaddleBoard> noneAvailablePaddleBoards = await _context.PaddleBoardReservations
             .Where(pbr =>
-                (
-                    dateFrom.ToDateTime(TimeOnly.MinValue) > pbr.Reservation.DateFrom &&
-                    pbr.Reservation.DateTo < dateFrom.ToDateTime(TimeOnly.MaxValue)
-                )
-                ||
-                (
-                    dateTo.ToDateTime(TimeOnly.MinValue) > pbr.Reservation.DateFrom &&
-                    pbr.Reservation.DateTo < dateTo.ToDateTime(TimeOnly.MaxValue)
-                )
+                dateFrom.ToDateTime(TimeOnly.MinValue) <= pbr.Reservation.DateTo
+                &&
+                dateTo.ToDateTime(TimeOnly.MaxValue) >= pbr.Reservation.DateFrom
             )
             .Select(pbr => pbr.PaddleBoard)
             .ToListAsync();

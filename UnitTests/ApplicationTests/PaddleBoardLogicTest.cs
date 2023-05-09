@@ -273,4 +273,181 @@ public class PaddleBoardLogicTest : DbTestBaseClass
         // Assert
         Assert.AreEqual(3, paddleBoardDtos.Count());
     }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_TwoReservationInBetweenWithSamePaddleBoard()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 6, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 6, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+        
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 7, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 7, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationOverlapping1()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 3, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 7, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationOverlapping2()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 7, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 9, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationOverlapping3()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 1, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 9, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationOverlapOnEdge1()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 3, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 5, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_OneReservationOverlapOnEdge2()
+    {
+        // Arrange
+        string dates = "05/05/2023-08/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 8, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 14, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(4, paddleBoardDtos.Count());
+    }
+    
+    [TestMethod]
+    public async Task GetAllPaddleBoardsAsync_MultipleReservations()
+    {
+        // Arrange
+        string dates = "03/05/2023-09/05/2023";
+
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 1, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 4, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+        
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 8, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 14, 12, 0, 0),
+            PaddleBoardIds = new List<int> {1}
+        });
+        
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 1, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 14, 12, 0, 0),
+            PaddleBoardIds = new List<int> {2}
+        });
+        
+        // Skip 3 because it is inactive 
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 2, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 4, 12, 0, 0),
+            PaddleBoardIds = new List<int> {4}
+        });
+        
+        // Skip 3 because it is inactive 
+        await _reservationLogic.CreateReservationAsync(new ReservationCreationDto
+        {
+            DateFrom = new DateTime(2023, 5, 8, 6, 0, 0),
+            DateTo = new DateTime(2023, 5, 12, 12, 0, 0),
+            PaddleBoardIds = new List<int> {4}
+        });
+
+        // Act
+        IEnumerable<PaddleBoardDto> paddleBoardDtos = await _logic.GetAllPaddleBoardsAsync(dates);
+
+        // Assert
+        Assert.AreEqual(2, paddleBoardDtos.Count());
+    }
 }
