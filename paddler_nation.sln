@@ -1,14 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{D84E278E-6562-4353-80CD-4F7EE41610B0}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{D84E278E-6562-4353-80CD-4F7EE41610B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{A6A76E8A-F231-46C3-9716-CF9CF978AE2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{A6A76E8A-F231-46C3-9716-CF9CF978AE2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{C51628D6-030B-4A5F-876F-70253947D77B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{C51628D6-030B-4A5F-876F-70253947D77B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfcDataAccess", "EfcDataAccess\EfcDataAccess.csproj", "{062C23CD-63CA-477C-B902-6038236173F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfcDataAccess", "EfcDataAccess\EfcDataAccess.csproj", "{062C23CD-63CA-477C-B902-6038236173F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,6 +19,11 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A6A76E8A-F231-46C3-9716-CF9CF978AE2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6A76E8A-F231-46C3-9716-CF9CF978AE2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6A76E8A-F231-46C3-9716-CF9CF978AE2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -32,8 +40,8 @@ Global
 		{22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22FE68E8-CBB9-4594-A4E2-12ACF67CEFF1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D84E278E-6562-4353-80CD-4F7EE41610B0}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

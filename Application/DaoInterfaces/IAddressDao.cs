@@ -4,6 +4,8 @@ namespace Application.DaoInterfaces;
 
 public interface IAddressDao
 {
-    Task<Delivery> GetByIdAsync(int id);
+    Task<Address> CreateAsync(Address address);
+    Task<Address?> GetByIdAsync(int id);
+    Address? AddressExists(Address address);
 
 }

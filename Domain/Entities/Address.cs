@@ -8,13 +8,14 @@ public class Address
     public int Id { get; set; }
     
     public string City { get; set; }
-    public int Zip { get; set; }
+    public int? Zip { get; set; }
     public string Street { get; set; }
     
     public ICollection<Delivery> Deliveries { get; }
     public ICollection<Event> Events { get; }
+    
 
-    public Address(string city, int zip, string street)
+    public Address(string city, int? zip, string street)
     {
         City = city;
         Zip = zip;

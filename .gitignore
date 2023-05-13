@@ -11,3 +11,4 @@ EfcDataAccess/PaddlerNationDatabase.db
 EfcDataAccess/Migrations
 
 ./idea/
+.vs/

@@ -1,5 +1,6 @@
 ﻿using Application.DaoInterfaces;
 using Application.Logic;
+using Application.LogicInterfaces;
 using Domain;
 using Domain.DTOs;
 using EfcDataAccess.DAOs;
@@ -18,6 +19,8 @@ public class OrderLogicTest : DbTestBaseClass
     private  IAddressDao _addressDao;
     private  IOrderDao _orderDao;
     private  OrderLogic _orderLogic;
+    private IDeliveryDao _deliveryDao;
+    private IDeliveryLogic _deliveryLogic;
 
     [TestInitialize]
     public void TestInitialize()
@@ -25,22 +28,20 @@ public class OrderLogicTest : DbTestBaseClass
         _customerDao = new CustomerEfcDao(PaddleBoardDb);
         _addressDao = new AddressEfcDao(PaddleBoardDb);
         _orderDao = new OrderEfcDao(PaddleBoardDb);
-        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao);
+        _deliveryDao = new DeliveryEfcDao(PaddleBoardDb);
+        _deliveryLogic = new DeliveryLogic(_deliveryDao);
+        _orderLogic = new OrderLogic(_orderDao, _customerDao, _addressDao, _deliveryLogic);
     }
 
     [TestMethod]
     public async Task OrderCreateAsyncTest()
     {
         // Arrange
-        Customer? customer = new Customer{ FullName = "John", Email = "john@example.com", Phone = "1234567890" };
+        var customer = new Customer{ FullName = "John", Email = "john@example.com", Phone = "1234567890" };
         await PaddleBoardDb.Customers.AddAsync(customer);
         await PaddleBoardDb.SaveChangesAsync();
     
-        var address = new Delivery();
-        await PaddleBoardDb.Deliveries.AddAsync(address);
-        await PaddleBoardDb.SaveChangesAsync();
-    
-        var order = new OrderCreationDto(120, 0, DateTime.Now,  0, 1, 1);
+        var order = new OrderCreationDto(120, PaymentMethod.CreditCard, customer.Id,  DeliveryType.HomeDelivery, "Horsens", 8700, "Sundvej");
         
         // Act
         var createdOrder = await _orderLogic.CreateAsync(order);
@@ -48,7 +49,6 @@ public class OrderLogicTest : DbTestBaseClass
         // Assert
         Assert.IsNotNull(createdOrder);
         Assert.AreEqual(order.OwnerId, createdOrder.OrderedBy.Id);
-        Assert.AreEqual(order.AddressId, createdOrder.Delivery.Id);
     }
     
 }

@@ -9,11 +9,11 @@ namespace WebApi.Controllers;
 [Route("[controller]")]
 public class OrdersController : ControllerBase
 {
-    private IOrderLogic orderLogic;
+    private readonly IOrderLogic _orderLogic;
 
     public OrdersController(IOrderLogic orderLogic)
     {
-        this.orderLogic = orderLogic;
+        this._orderLogic = orderLogic;
     }
 
     [HttpPost]
@@ -21,7 +21,7 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            Order order = await orderLogic.CreateAsync(dto);
+            var order = await _orderLogic.CreateAsync(dto);
             return Created($"/orders/{order.Id}", order);
         }
         catch (Exception e)
@@ -36,7 +36,7 @@ public class OrdersController : ControllerBase
     {
         try
         {
-            await orderLogic.DeleteAsync(id);
+            await _orderLogic.DeleteAsync(id);
             return Ok();
         }
         catch (Exception e)

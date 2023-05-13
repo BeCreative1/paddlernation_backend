@@ -2,5 +2,5 @@
 
 public enum DeliveryType
 {
-    HomeDelivery, ReadyToGo
+    HomeDelivery, ReadyToGo, PickUpYourself
 }

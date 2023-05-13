@@ -11,7 +11,6 @@ namespace xUnit.WebAPITests;
 [TestClass]
 public class ReservationsControllerTests
 {
-
 	private Mock<IReservationLogic> _mockReservationLogic;
 	private ReservationsController _reservationsController;
 
